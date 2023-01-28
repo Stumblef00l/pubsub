@@ -99,7 +99,9 @@
     "cfenv": "cpp",
     "scoped_allocator": "cpp",
     "typeindex": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "ranges": "cpp",
+    "shared_mutex": "cpp"
   },
   "lldb.displayFormat": "auto",
   "lldb.dereferencePointers": true,

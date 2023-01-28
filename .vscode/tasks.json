@@ -5,12 +5,12 @@
     {
       "label": "Bazel Build (Debug)",
       "type": "shell",
-      "command": "bazel  build --cxxopt='-std=c++2a' ${relativeFileDirname}:${fileBasenameNoExtension} -c dbg",
+      "command": "bazel  build --cxxopt='-std=c++20' ${relativeFileDirname}:${fileBasenameNoExtension} -c dbg",
       "windows": {
-        "command": "bazel build --cxxopt='-std=c++2a' ${relativeFileDirname}:${fileBasenameNoExtension} --experimental_enable_runfiles -c dbg"
+        "command": "bazel build --cxxopt='-std=c++20' ${relativeFileDirname}:${fileBasenameNoExtension} --experimental_enable_runfiles -c dbg"
       },
       "osx": {
-        "command": "bazel build --cxxopt='-std=c++2a' ${relativeFileDirname}:${fileBasenameNoExtension} -c dbg --spawn_strategy=local",
+        "command": "bazel build --cxxopt='-std=c++20' ${relativeFileDirname}:${fileBasenameNoExtension} -c dbg --spawn_strategy=local",
       },
       "group": {
         "kind": "build",
@@ -20,12 +20,12 @@
     {
       "label": "Bazel Build (Run)",
       "type": "shell",
-      "command": "bazel  build --cxxopt='-std=c++2a' ${relativeFileDirname}:${fileBasenameNoExtension}",
+      "command": "bazel  build --cxxopt='-std=c++20' ${relativeFileDirname}:${fileBasenameNoExtension}",
       "windows": {
-        "command": "bazel build --cxxopt='-std=c++2a' ${relativeFileDirname}:${fileBasenameNoExtension}"
+        "command": "bazel build --cxxopt='-std=c++20' ${relativeFileDirname}:${fileBasenameNoExtension}"
       },
       "osx": {
-        "command": "bazel build --cxxopt='-std=c++2a' ${relativeFileDirname}:${fileBasenameNoExtension}",
+        "command": "bazel build --cxxopt='-std=c++20' ${relativeFileDirname}:${fileBasenameNoExtension}",
       },
       "group": {
         "kind": "build",
@@ -35,12 +35,12 @@
     {
       "label": "Bazel Build (Run Opt)",
       "type": "shell",
-      "command": "bazel  build --cxxopt='-std=c++2a' ${relativeFileDirname}:${fileBasenameNoExtension} -c opt",
+      "command": "bazel  build --cxxopt='-std=c++20' ${relativeFileDirname}:${fileBasenameNoExtension} -c opt",
       "windows": {
-        "command": "bazel build --cxxopt='-std=c++2a' ${relativeFileDirname}:${fileBasenameNoExtension} -c opt"
+        "command": "bazel build --cxxopt='-std=c++20' ${relativeFileDirname}:${fileBasenameNoExtension} -c opt"
       },
       "osx": {
-        "command": "bazel build --cxxopt='-std=c++2a' ${relativeFileDirname}:${fileBasenameNoExtension} -c opt",
+        "command": "bazel build --cxxopt='-std=c++20' ${relativeFileDirname}:${fileBasenameNoExtension} -c opt",
       },
       "group": {
         "kind": "build",
