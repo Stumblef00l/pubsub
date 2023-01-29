@@ -9,17 +9,19 @@
 // Provides an interface for Publishers
 class IPublisher {
     public:
-        // Implement publish to control publisher behavior
-        virtual void publish(PubsubMessage msg) = 0;
+        typedef std::unique_ptr<ISubscriberFamilyManager> SubscriberFamilyManagerPtr;
 
-        // Implement getter for the SubscriberFamilyManager instance
-        virtual ISubscriberFamilyManager* getSubscriberFamilyManager() = 0;
+        // Implements publish to control publisher behavior
+        virtual void publish(PubsubMessage message) = 0;
+
+        // Implements getter for the SubscriberFamilyManager instance
+        virtual ISubscriberFamilyManager* getSubscriberFamilyManager() const = 0;
 
     protected:
-        std::unique_ptr<ISubscriberFamilyManager> sfmgr_;
+        SubscriberFamilyManagerPtr subscriberFamilyManager_;
 
         // Constructor
-        IPublisher(std::unique_ptr<ISubscriberFamilyManager> sfmgr);
+        IPublisher(SubscriberFamilyManagerPtr subscriberFamilyManager);
 };
 
 #endif

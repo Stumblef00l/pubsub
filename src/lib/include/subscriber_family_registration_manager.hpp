@@ -1,0 +1,6 @@
+#ifndef _SUBSCRIBER_FAMILY_REGISTRATION_MANAGER_HPP_
+#define _SUBSCRIBER_FAMILY_REGISTRATION_MANAGER_HPP_
+
+class ISubscriberFamilyRegistrationManager {};
+
+#endif

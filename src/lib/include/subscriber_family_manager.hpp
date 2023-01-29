@@ -9,14 +9,14 @@
 
 class ISubscriberFamilyManager {
     public:
-        typedef std::unique_ptr<ISubscriberFamily> ISFPtr;
+        typedef std::unique_ptr<ISubscriberFamily> SubscriberFamilyManagerPtr;
 
         virtual void createSubscriberFamily(std::unique_ptr<ISubscriberFamily> subscriberFamily) = 0;
         virtual void deleteSubscriberFamily(std::string familyName) = 0;
-        virtual ISubscriberFamily* getSubscriberFamily(std::string familyName) = 0;
+        virtual ISubscriberFamily* getSubscriberFamily(std::string familyName) const = 0;
 
     protected:
-        std::vector<ISubscriberFamilyManager::ISFPtr> sfList_;
+        std::vector<SubscriberFamilyManagerPtr> subscriberFamilyList_;
         ISubscriberFamilyManager();
 };
 
