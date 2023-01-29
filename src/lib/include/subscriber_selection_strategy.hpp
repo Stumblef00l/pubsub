@@ -1,6 +1,12 @@
 #ifndef _SUBSCRIBER_SELECTION_STRATEGY_HPP_
 #define _SUBSCRIBER_SELECTION_STRATEGY_HPP_
 
-class ISubscriberSelectionStrategy {};
+#include <vector>
+#include "subscriber.hpp"
+
+class ISubscriberSelectionStrategy {
+    public:
+        virtual std::vector<ISubscriber*> select(const std::vector<ISubscriber*>& subscribers) = 0;
+};
 
 #endif
