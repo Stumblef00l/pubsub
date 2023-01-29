@@ -2,6 +2,7 @@
 #define _SUBSCRIBER_SELECTION_STRATEGY_HPP_
 
 #include <vector>
+
 #include "subscriber.hpp"
 
 class ISubscriberSelectionStrategy {

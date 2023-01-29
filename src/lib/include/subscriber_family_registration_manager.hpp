@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+
 #include "subscriber.hpp"
 
 class ISubscriberFamilyRegistrationManager {
