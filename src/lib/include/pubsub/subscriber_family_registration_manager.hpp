@@ -6,14 +6,16 @@
 
 #include "subscriber.hpp"
 
-class ISubscriberFamilyRegistrationManager {
-    public:
-        virtual void registerSubscriber(ISubscriber* subscriber) = 0;
-        virtual void unregisterSubscriber(ISubscriber* subscriber) = 0;
-        virtual std::vector<ISubscriber*> getSubscribers() = 0;
+namespace pubsub {
+    class ISubscriberFamilyRegistrationManager {
+        public:
+            virtual void registerSubscriber(ISubscriber* subscriber) = 0;
+            virtual void unregisterSubscriber(ISubscriber* subscriber) = 0;
+            virtual std::vector<ISubscriber*> getSubscribers() = 0;
 
-    protected:
-        std::vector<ISubscriber*> subscribers_;
-};
+        protected:
+            std::vector<ISubscriber*> subscribers_;
+    };
+}
 
 #endif

@@ -11,7 +11,7 @@ pubsub::IPublisher::IPublisher(IPublisher::SubscriberFamilyManagerPtr subscriber
 pubsub::BasicSynchronousPublisher::BasicSynchronousPublisher(IPublisher::SubscriberFamilyManagerPtr subscriberFamilyManager)
     : IPublisher(std::move(subscriberFamilyManager)) {}
 
-ISubscriberFamilyManager* pubsub::BasicSynchronousPublisher::getSubscriberFamilyManager() const {
+pubsub::ISubscriberFamilyManager* pubsub::BasicSynchronousPublisher::getSubscriberFamilyManager() const {
     auto s = subscriberFamilyManager_.get();
     if (s == nullptr || s == NULL) {
         throw NullSubscriberFamilyManagerException();
