@@ -12,7 +12,7 @@ class ISubscriberFamily {
         typedef std::unique_ptr<ISubscriberFamilyRegistrationManager> RegistrationManagerPtr;
         typedef std::string SubscriberFamilyID;
 
-        virtual void publish(PubsubMessage msg) = 0;
+        virtual void publish(PubsubMessage message) = 0;
         virtual ISubscriberFamilyRegistrationManager* getRegistrationManager() const = 0;
         virtual ISubscriberSelectionStrategy* getSelectionStrategy() const = 0;
         virtual void setSelectionStrategy(ISubscriberSelectionStrategy* strategy) = 0;

@@ -1,3 +1,6 @@
+# C++ standard
+build --action_env=BAZEL_CXXOPTS="-std=c++20"
+
 # Address sanitizer configuration.
 # ASAN_SYMBOLIZER_PATH=/usr/local/Cellar/llvm/13.0.0_1/bin/llvm-symbolizer
 
