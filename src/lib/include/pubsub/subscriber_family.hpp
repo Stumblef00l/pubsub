@@ -14,6 +14,7 @@ namespace pubsub {
             typedef std::string SubscriberFamilyID;
 
             virtual void publish(PubsubMessage message) = 0;
+            virtual SubscriberFamilyID getID() const = 0; 
             virtual ISubscriberFamilyRegistrationManager* getRegistrationManager() const = 0;
             virtual ISubscriberSelectionStrategy* getSelectionStrategy() const = 0;
             virtual void setSelectionStrategy(ISubscriberSelectionStrategy* strategy) = 0;
