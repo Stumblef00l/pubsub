@@ -16,7 +16,7 @@ void BasicSubscriberFamilyManager::CreateSubscriberFamily(
     std::unique_ptr<ISubscriberFamily> subscriber_family) {
     auto id = subscriber_family->GetID();
 
-    for(auto &familyItr: subscriber_family_list_)
+    for(auto& familyItr: subscriber_family_list_)
         if (id == familyItr->GetID())
             throw SubscriberFamilyAlreadyExistsException();
 
