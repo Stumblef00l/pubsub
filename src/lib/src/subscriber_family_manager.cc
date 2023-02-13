@@ -1,44 +1,50 @@
+#include "pubsub/subscriber_family_manager.hpp"
+
 #include <exception>
 #include <utility>
 
-#include "pubsub/subscriber_family_manager.hpp"
 #include "pubsub/subscriber_family.hpp"
 
-pubsub::ISubscriberFamilyManager::ISubscriberFamilyManager() {}
+namespace pubsub {
 
-pubsub::BasicSubscriberFamilyManager::BasicSubscriberFamilyManager(): ISubscriberFamilyManager() {}
+ISubscriberFamilyManager::ISubscriberFamilyManager() {}
 
-void pubsub::BasicSubscriberFamilyManager::createSubscriberFamily(
-    std::unique_ptr<pubsub::ISubscriberFamily> subscriberFamily) {
-    auto id = subscriberFamily->getID();
+BasicSubscriberFamilyManager::BasicSubscriberFamilyManager()
+    : ISubscriberFamilyManager() {}
 
-    for(auto &familyItr: subscriberFamilyList_)
-        if (id == familyItr->getID())
-            throw pubsub::SubscriberFamilyAlreadyExistsException();
+void BasicSubscriberFamilyManager::CreateSubscriberFamily(
+    std::unique_ptr<ISubscriberFamily> subscriber_family) {
+    auto id = subscriber_family->GetID();
 
-    subscriberFamilyList_.push_back(std::move(subscriberFamily));
+    for(auto &familyItr: subscriber_family_list_)
+        if (id == familyItr->GetID())
+            throw SubscriberFamilyAlreadyExistsException();
+
+    subscriber_family_list_.push_back(std::move(subscriber_family));
 }
 
-void pubsub::BasicSubscriberFamilyManager::deleteSubscriberFamily(
-    const pubsub::ISubscriberFamily::SubscriberFamilyID& familyID) {
-    for(auto idx = (size_t)0; idx < subscriberFamilyList_.size(); idx++) {
-        if (familyID == subscriberFamilyList_[idx]->getID()) {
-            subscriberFamilyList_.erase(subscriberFamilyList_.begin() + idx);
+void BasicSubscriberFamilyManager::DeleteSubscriberFamily(
+    const ISubscriberFamily::SubscriberFamilyID& familyID) {
+    for(auto idx = (size_t)0; idx < subscriber_family_list_.size(); idx++) {
+        if (familyID == subscriber_family_list_[idx]->GetID()) {
+            subscriber_family_list_.erase(subscriber_family_list_.begin() + idx);
             return;
         }
     }
 
-    throw pubsub::SubscriberFamilyNotFoundException();
+    throw SubscriberFamilyNotFoundException();
 }
 
-pubsub::ISubscriberFamily*
-pubsub::BasicSubscriberFamilyManager::getSubscriberFamily(
-    const pubsub::ISubscriberFamily::SubscriberFamilyID& familyID) const {
-    for(auto idx = (size_t)0; idx < subscriberFamilyList_.size(); idx++) {
-        if (familyID == subscriberFamilyList_[idx]->getID())
-            return subscriberFamilyList_[idx].get();
+ISubscriberFamily*
+BasicSubscriberFamilyManager::GetSubscriberFamily(
+    const ISubscriberFamily::SubscriberFamilyID& familyID) const {
+    for(auto idx = (size_t)0; idx < subscriber_family_list_.size(); idx++) {
+        if (familyID == subscriber_family_list_[idx]->GetID())
+            return subscriber_family_list_[idx].get();
     }
 
-    throw pubsub::SubscriberFamilyNotFoundException();
+    throw SubscriberFamilyNotFoundException();
     return nullptr;
 }
+
+} // namespace pubsub

@@ -8,52 +8,55 @@
 #include "subscriber_family.hpp"
 
 namespace pubsub {
-    class ISubscriberFamilyManager {
-        public:
-            typedef std::unique_ptr<ISubscriberFamily> SubscriberFamilyManagerPtr;
 
-            virtual void createSubscriberFamily(std::unique_ptr<ISubscriberFamily> subscriberFamily) = 0;
-            virtual void deleteSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& familyID) = 0;
-            virtual ISubscriberFamily* getSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& familyID) const = 0;
+class ISubscriberFamilyManager {
+    public:
+        typedef std::unique_ptr<ISubscriberFamily> ISubscriberFamilyUniquePtr;
 
-        protected:
-            std::vector<SubscriberFamilyManagerPtr> subscriberFamilyList_;
-            ISubscriberFamilyManager();
-    };
+        virtual void CreateSubscriberFamily(ISubscriberFamilyUniquePtr subscriber_family) = 0;
+        virtual void DeleteSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) = 0;
+        virtual ISubscriberFamily* GetSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) const = 0;
 
-    class BasicSubscriberFamilyManager: public ISubscriberFamilyManager {
-        public:
-            BasicSubscriberFamilyManager();
+    protected:
+        ISubscriberFamilyManager();
 
-            void createSubscriberFamily(std::unique_ptr<ISubscriberFamily> subscriberFamily) override;
-            void deleteSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& familyID) override;
-            ISubscriberFamily* getSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& familyID) const override;
-    };
+        std::vector<ISubscriberFamilyUniquePtr> subscriber_family_list_;
+};
+
+class BasicSubscriberFamilyManager: public ISubscriberFamilyManager {
+    public:
+        BasicSubscriberFamilyManager();
+
+        void CreateSubscriberFamily(ISubscriberFamilyUniquePtr subscriber_family) override;
+        void DeleteSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) override;
+        ISubscriberFamily* GetSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) const override;
+};
 
 
-    // Thrown when trying to create a SubscriberFamily that already exists
-    class SubscriberFamilyAlreadyExistsException: public std::exception {
-        static constexpr std::string_view ERROR_MESSAGE = "Create failed as SubscriberFamily with provided ID already exists";
-        
-        public:
-            // Displays the error message
-            inline const char*
-            what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
-                return ERROR_MESSAGE.data();
-            };
-    };
+// Thrown when trying to create a SubscriberFamily that already exists
+class SubscriberFamilyAlreadyExistsException: public std::exception {
+    static constexpr std::string_view errorMessage = "Create failed as SubscriberFamily with provided ID already exists";
+    
+    public:
+        // Displays the error message
+        inline const char*
+        what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
+            return errorMessage.data();
+        };
+};
 
-    // Thrown when a requested SubscriberFamily does not exist
-    class SubscriberFamilyNotFoundException: public std::exception {
-        static constexpr std::string_view ERROR_MESSAGE = "SubscriberFamily not found registered to manager";
-        
-        public:
-            // Displays the error message
-            inline const char*
-            what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
-                return ERROR_MESSAGE.data();
-            };
-    };
-}
+// Thrown when a requested SubscriberFamily does not exist
+class SubscriberFamilyNotFoundException: public std::exception {
+    static constexpr std::string_view errorMessage = "SubscriberFamily not found registered to manager";
+    
+    public:
+        // Displays the error message
+        inline const char*
+        what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
+            return errorMessage.data();
+        };
+};
+
+} // namespace pubsub
 
 #endif

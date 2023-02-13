@@ -6,10 +6,12 @@
 #include "subscriber.hpp"
 
 namespace pubsub {
-    class ISubscriberSelectionStrategy {
-        public:
-            virtual std::vector<ISubscriber*> select(const std::vector<ISubscriber*>& subscribers) = 0;
-    };
-}
+
+class ISubscriberSelectionStrategy {
+    public:
+        virtual std::vector<ISubscriber*> select(const std::vector<ISubscriber*>& subscribers) = 0;
+};
+
+} // namespace pubsub
 
 #endif

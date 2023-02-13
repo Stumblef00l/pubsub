@@ -1,59 +1,64 @@
+#include "pubsub/subscriber_family.hpp"
+
 #include <exception>
 #include <utility>
 
-#include "pubsub/subscriber_family.hpp"
 #include "pubsub/subscriber_family_registration_manager.hpp"
 #include "pubsub/subscriber_selection_strategy.hpp"
 #include "pubsub/structs.hpp"
 
-pubsub::ISubscriberFamily::ISubscriberFamily(
-    const pubsub::ISubscriberFamily::SubscriberFamilyID id,
-    pubsub::ISubscriberFamily::RegistrationManagerPtr registrationManager,
-    pubsub::ISubscriberSelectionStrategy* selectionStrategy)
-    : id_(id),
-      registrationManager_(std::move(registrationManager)),
-      selectionStrategy_(std::move(selectionStrategy)) {}
+namespace pubsub {
 
-pubsub::BasicSubscriberFamily::BasicSubscriberFamily(
+ISubscriberFamily::ISubscriberFamily(
+    const ISubscriberFamily::SubscriberFamilyID id,
+    ISubscriberFamily::ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
+    ISubscriberSelectionStrategy* selection_strategy)
+    : id_(id),
+      registration_manager_(std::move(registration_manager)),
+      selection_strategy_(std::move(selection_strategy)) {}
+
+BasicSubscriberFamily::BasicSubscriberFamily(
     const SubscriberFamilyID id,
-    RegistrationManagerPtr registrationManager,
-    ISubscriberSelectionStrategy* selectionStrategy)
+    ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
+    ISubscriberSelectionStrategy* selection_strategy)
     : ISubscriberFamily(
         id,
-        std::move(registrationManager),
-        std::move(selectionStrategy)) {}
+        std::move(registration_manager),
+        std::move(selection_strategy)) {}
 
-inline pubsub::ISubscriberFamily::SubscriberFamilyID
-pubsub::BasicSubscriberFamily::getID() const noexcept {
+inline ISubscriberFamily::SubscriberFamilyID
+BasicSubscriberFamily::GetID() const noexcept {
     return id_;
 }
 
-pubsub::ISubscriberFamilyRegistrationManager*
-pubsub::BasicSubscriberFamily::getRegistrationManager() const {
-    if (registrationManager_ == nullptr)
-        throw pubsub::NullSubscriberFamilyRegistrationManager();
-    return registrationManager_.get();
+ISubscriberFamilyRegistrationManager*
+BasicSubscriberFamily::GetRegistrationManager() const {
+    if (registration_manager_ == nullptr)
+        throw NullSubscriberFamilyRegistrationManager();
+    return registration_manager_.get();
 }
 
-pubsub::ISubscriberSelectionStrategy*
-pubsub::BasicSubscriberFamily::getSelectionStrategy() const {
-    if (selectionStrategy_ == nullptr)
-        throw pubsub::NullSubscriberFamilySelectionStrategy();
-    return selectionStrategy_;
+ISubscriberSelectionStrategy*
+BasicSubscriberFamily::GetSelectionStrategy() const {
+    if (selection_strategy_ == nullptr)
+        throw NullSubscriberFamilySelectionStrategy();
+    return selection_strategy_;
 }
 
-inline void pubsub::BasicSubscriberFamily::setSelectionStrategy(ISubscriberSelectionStrategy* strategy) noexcept {
-    selectionStrategy_ = strategy;
+inline void BasicSubscriberFamily::SetSelectionStrategy(ISubscriberSelectionStrategy* strategy) noexcept {
+    selection_strategy_ = strategy;
 }
 
-void pubsub::BasicSubscriberFamily::publish(pubsub::PubsubMessage message) {
-    if (registrationManager_ == nullptr)
-        throw pubsub::NullSubscriberFamilyRegistrationManager();
-    if (selectionStrategy_ == nullptr)
-        throw pubsub::NullSubscriberFamilySelectionStrategy();
+void BasicSubscriberFamily::Publish(PubsubMessage message) {
+    if (registration_manager_ == nullptr)
+        throw NullSubscriberFamilyRegistrationManager();
+    if (selection_strategy_ == nullptr)
+        throw NullSubscriberFamilySelectionStrategy();
 
-    auto subscriberList = registrationManager_->getSubscribers();
-    auto selectedSubscribers = selectionStrategy_->select(subscriberList);
-    for(auto &subscriber : selectedSubscribers)
+    auto subscriber_list = registration_manager_->GetSubscribers();
+    auto selected_subscribers = selection_strategy_->select(subscriber_list);
+    for(auto &subscriber : selected_subscribers)
         subscriber->update(message);
 }
+
+} // namespace pubsub

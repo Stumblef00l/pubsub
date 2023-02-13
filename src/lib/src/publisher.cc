@@ -1,31 +1,36 @@
+#include "pubsub/publisher.hpp"
+
 #include <exception>
 #include <utility>
 
-#include "pubsub/publisher.hpp"
 #include "pubsub/structs.hpp"
 #include "pubsub/subscriber_family_manager.hpp"
 
-pubsub::IPublisher::IPublisher(
-    IPublisher::SubscriberFamilyManagerPtr subscriberFamilyManager)
-    : subscriberFamilyManager_(std::move(subscriberFamilyManager)) {}
+namespace pubsub {
 
-pubsub::BasicSynchronousPublisher::BasicSynchronousPublisher(
-    IPublisher::SubscriberFamilyManagerPtr subscriberFamilyManager)
-    : IPublisher(std::move(subscriberFamilyManager)) {}
+IPublisher::IPublisher(
+    IPublisher::ISubscriberFamilyManagerUniquePtr subscriber_family_manager)
+    : subscriber_family_manager_(std::move(subscriber_family_manager)) {}
 
-pubsub::ISubscriberFamilyManager*
-pubsub::BasicSynchronousPublisher::getSubscriberFamilyManager() const {
-    auto s = subscriberFamilyManager_.get();
+BasicSynchronousPublisher::BasicSynchronousPublisher(
+    IPublisher::ISubscriberFamilyManagerUniquePtr subscriber_family_manager)
+    : IPublisher(std::move(subscriber_family_manager)) {}
+
+ISubscriberFamilyManager*
+BasicSynchronousPublisher::GetSubscriberFamilyManager() const {
+    auto s = subscriber_family_manager_.get();
     if (s == nullptr || s == NULL) {
         throw NullSubscriberFamilyManagerException();
     }
 
-    return subscriberFamilyManager_.get();
+    return s;
 }
 
-void pubsub::BasicSynchronousPublisher::publish(
+void BasicSynchronousPublisher::Publish(
     PubsubMessage message) {
-    auto s = getSubscriberFamilyManager();
-    auto family = s->getSubscriberFamily(message.familyID);
-    family->publish(std::move(message));
+    auto s = subscriber_family_manager_.get();
+    auto family = s->GetSubscriberFamily(message.family_id);
+    family->Publish(std::move(message));
 }
+
+} // namespace pubsub

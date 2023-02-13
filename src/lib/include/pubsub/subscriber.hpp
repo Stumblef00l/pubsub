@@ -4,10 +4,12 @@
 #include "structs.hpp"
 
 namespace pubsub {
-    class ISubscriber {
-        public:
-            virtual void update(PubsubMessage message) = 0;
-    };
-}
+
+class ISubscriber {
+    public:
+        virtual void update(PubsubMessage message) = 0;
+};
+
+} // namespace pubsub
 
 #endif
