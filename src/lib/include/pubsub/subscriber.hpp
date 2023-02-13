@@ -9,7 +9,7 @@ class ISubscriber {
     public:
         typedef std::string SubscriberID;
 
-        virtual SubscriberID getID() const = 0; 
+        virtual SubscriberID GetID() const = 0; 
         virtual void Update(PubsubMessage message) = 0;
 
     protected:

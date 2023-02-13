@@ -10,10 +10,10 @@ BasicSubscriberFamilyRegistrationManager::BasicSubscriberFamilyRegistrationManag
     : ISubscriberFamilyRegistrationManager() {}
 
 void BasicSubscriberFamilyRegistrationManager::RegisterSubscriber(ISubscriber* subscriber) {
-    auto id = subscriber->getID();
+    auto id = subscriber->GetID();
 
     for(auto& registeredSubscriber: subscribers_)
-        if (id == registeredSubscriber->getID())
+        if (id == registeredSubscriber->GetID())
             throw SubscriberAlreadyExistsException();
 
     subscribers_.push_back(subscriber);
@@ -21,7 +21,7 @@ void BasicSubscriberFamilyRegistrationManager::RegisterSubscriber(ISubscriber* s
 
 void BasicSubscriberFamilyRegistrationManager::UnregisterSubscriber(ISubscriber::SubscriberID id) {
     for(auto idx = (size_t)0; idx < subscribers_.size(); idx++) {
-        if (id == subscribers_[idx]->getID()) {
+        if (id == subscribers_[idx]->GetID()) {
             subscribers_.erase(subscribers_.begin() + idx);
             return;
         }
@@ -36,7 +36,7 @@ inline std::vector<ISubscriber*> BasicSubscriberFamilyRegistrationManager::GetSu
 
 ISubscriber* BasicSubscriberFamilyRegistrationManager::GetSubscriber(ISubscriber::SubscriberID id) const {
     for(auto& subscriber: subscribers_)
-        if (id == subscriber->getID())
+        if (id == subscriber->GetID())
             return subscriber;
 
     throw SubscriberNotFoundException();
