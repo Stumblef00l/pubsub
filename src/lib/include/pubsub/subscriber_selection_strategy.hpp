@@ -12,6 +12,16 @@ class ISubscriberSelectionStrategy {
         virtual std::vector<ISubscriber*> select(const std::vector<ISubscriber*>& subscribers) = 0;
 };
 
+class RoundRobinSubscriberSelectionStrategy {
+    public:
+        RoundRobinSubscriberSelectionStrategy();
+
+        std::vector<ISubscriber*> select(const std::vector<ISubscriber*>& subscribers);
+    
+    private:
+        size_t current_selected_index_;
+};
+
 } // namespace pubsub
 
 #endif

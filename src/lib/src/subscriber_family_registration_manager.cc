@@ -1,5 +1,7 @@
 #include "pubsub/subscriber_family_registration_manager.hpp"
 
+#include "pubsub/subscriber.hpp"
+
 namespace pubsub {
 
 ISubscriberFamilyRegistrationManager::ISubscriberFamilyRegistrationManager() {}
