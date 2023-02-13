@@ -46,7 +46,7 @@ class BasicSubscriberFamily : public ISubscriberFamily {
 };
 
 // Thrown when SubscriberFamily's registration manager is null
-class NullSubscriberFamilyRegistrationManager: public std::exception {
+class NullSubscriberFamilyRegistrationManagerException: public std::exception {
     static constexpr std::string_view errorMessage = "Referenced ISubscriberFamilyManagerRegistrationManager is not defined";
     
     public:
@@ -58,7 +58,7 @@ class NullSubscriberFamilyRegistrationManager: public std::exception {
 };
 
 // Thrown when SubscriberFamily's selection strategy is null
-class NullSubscriberFamilySelectionStrategy: public std::exception {
+class NullSubscriberFamilySelectionStrategyException: public std::exception {
     static constexpr std::string_view errorMessage = "Referenced ISubscriberFamilySelectionStrategy is not defined";
     
     public:

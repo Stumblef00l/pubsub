@@ -34,14 +34,14 @@ BasicSubscriberFamily::GetID() const noexcept {
 ISubscriberFamilyRegistrationManager*
 BasicSubscriberFamily::GetRegistrationManager() const {
     if (registration_manager_ == nullptr)
-        throw NullSubscriberFamilyRegistrationManager();
+        throw NullSubscriberFamilyRegistrationManagerException();
     return registration_manager_.get();
 }
 
 ISubscriberSelectionStrategy*
 BasicSubscriberFamily::GetSelectionStrategy() const {
     if (selection_strategy_ == nullptr)
-        throw NullSubscriberFamilySelectionStrategy();
+        throw NullSubscriberFamilySelectionStrategyException();
     return selection_strategy_;
 }
 
@@ -51,9 +51,9 @@ inline void BasicSubscriberFamily::SetSelectionStrategy(ISubscriberSelectionStra
 
 void BasicSubscriberFamily::Publish(PubsubMessage message) {
     if (registration_manager_ == nullptr)
-        throw NullSubscriberFamilyRegistrationManager();
+        throw NullSubscriberFamilyRegistrationManagerException();
     if (selection_strategy_ == nullptr)
-        throw NullSubscriberFamilySelectionStrategy();
+        throw NullSubscriberFamilySelectionStrategyException();
 
     auto subscriber_list = registration_manager_->GetSubscribers();
     auto selected_subscribers = selection_strategy_->select(subscriber_list);
