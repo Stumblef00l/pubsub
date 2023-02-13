@@ -11,10 +11,11 @@ class ISubscriber {
 
         virtual SubscriberID getID() const = 0; 
         virtual void update(PubsubMessage message) = 0;
-    protected:
-        ISubscriber(const SubscriberID& id);
 
-        const SubscriberID id;
+    protected:
+        ISubscriber(const SubscriberID id);
+
+        const SubscriberID id_;
 };
 
 } // namespace pubsub
