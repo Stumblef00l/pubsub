@@ -8,7 +8,7 @@ RoundRobinSubscriberSelectionStrategy::RoundRobinSubscriberSelectionStrategy()
     : current_selected_index_(0) {}
 
 std::vector<ISubscriber*>
-RoundRobinSubscriberSelectionStrategy::select(const std::vector<ISubscriber*>& subscribers) {
+RoundRobinSubscriberSelectionStrategy::Select(const std::vector<ISubscriber*>& subscribers) {
     if(subscribers.empty())
         return {};
     

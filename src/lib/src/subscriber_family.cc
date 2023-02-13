@@ -56,9 +56,9 @@ void BasicSubscriberFamily::Publish(PubsubMessage message) {
         throw NullSubscriberFamilySelectionStrategyException();
 
     auto subscriber_list = registration_manager_->GetSubscribers();
-    auto selected_subscribers = selection_strategy_->select(subscriber_list);
+    auto selected_subscribers = selection_strategy_->Select(subscriber_list);
     for(auto &subscriber : selected_subscribers)
-        subscriber->update(message);
+        subscriber->Update(message);
 }
 
 } // namespace pubsub

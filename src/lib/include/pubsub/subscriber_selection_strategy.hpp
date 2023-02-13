@@ -9,14 +9,14 @@ namespace pubsub {
 
 class ISubscriberSelectionStrategy {
     public:
-        virtual std::vector<ISubscriber*> select(const std::vector<ISubscriber*>& subscribers) = 0;
+        virtual std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) = 0;
 };
 
 class RoundRobinSubscriberSelectionStrategy {
     public:
         RoundRobinSubscriberSelectionStrategy();
 
-        std::vector<ISubscriber*> select(const std::vector<ISubscriber*>& subscribers);
+        std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers);
     
     private:
         size_t current_selected_index_;
