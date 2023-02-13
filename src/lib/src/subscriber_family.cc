@@ -57,7 +57,7 @@ void BasicSubscriberFamily::Publish(PubsubMessage message) {
 
     auto subscriber_list = registration_manager_->GetSubscribers();
     auto selected_subscribers = selection_strategy_->Select(subscriber_list);
-    for(auto &subscriber : selected_subscribers)
+    for(auto& subscriber : selected_subscribers)
         subscriber->Update(message);
 }
 
