@@ -5,9 +5,17 @@
 
 namespace pubsub {
 
+// Unique key of a pubsub message
 typedef std::string PubsubMessageId;
+
+// Unique ID to identify a subscriber family
 typedef std::string PubsubSubscriberFamilyId;
-typedef std::string PubsubPayload;
+
+// Pubsub payload.
+typedef std::string PubsubMessagePayload;
+
+// Unique ID to identify a subscriber
+typedef std::string PubsubSubscriberId;
 
 struct PubsubMessage {
     PubsubMessage(PubsubMessage&& message)
@@ -36,7 +44,7 @@ struct PubsubMessage {
 
     PubsubMessageId id;
     PubsubSubscriberFamilyId family_id;
-    PubsubPayload payload;
+    PubsubMessagePayload payload;
 };
 
 } // namespace pubsub

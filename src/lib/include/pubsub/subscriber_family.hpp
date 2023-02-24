@@ -12,23 +12,22 @@ namespace pubsub {
 class ISubscriberFamily {
     public:
         typedef std::unique_ptr<ISubscriberFamilyRegistrationManager> ISubscriberFamilyRegistrationManagerUniquePtr;
-        typedef std::string SubscriberFamilyID;
 
-        virtual void Publish(PubsubMessage message) = 0;
-        virtual SubscriberFamilyID GetID() const = 0; 
-        virtual ISubscriberFamilyRegistrationManager* GetRegistrationManager() const = 0;
-        virtual ISubscriberSelectionStrategy* GetSelectionStrategy() const = 0;
-        virtual void SetSelectionStrategy(ISubscriberSelectionStrategy* strategy) = 0;
+        virtual void Publish(PubsubMessage message);
+        virtual PubsubSubscriberFamilyId GetID() const; 
+        virtual ISubscriberFamilyRegistrationManager* GetRegistrationManager() const;
+        virtual ISubscriberSelectionStrategy* GetSelectionStrategy() const;
+        virtual void SetSelectionStrategy(ISubscriberSelectionStrategy* strategy);
 
         virtual ~ISubscriberFamily() {}
 
     protected:
         ISubscriberFamily(
-            const SubscriberFamilyID id,
+            const PubsubSubscriberFamilyId id,
             ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
             ISubscriberSelectionStrategy* selection_strategy);
     
-        const SubscriberFamilyID id_;
+        const PubsubSubscriberFamilyId id_;
         ISubscriberFamilyRegistrationManagerUniquePtr registration_manager_;
         ISubscriberSelectionStrategy* selection_strategy_;
 };
@@ -36,15 +35,9 @@ class ISubscriberFamily {
 class BasicSubscriberFamily : public ISubscriberFamily {
     public:
         BasicSubscriberFamily(
-            const SubscriberFamilyID id,
+            const PubsubSubscriberFamilyId id,
             ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
             ISubscriberSelectionStrategy* selection_strategy);
-        
-        void Publish(PubsubMessage message) override;
-        inline SubscriberFamilyID GetID() const noexcept override; 
-        ISubscriberFamilyRegistrationManager* GetRegistrationManager() const override;
-        ISubscriberSelectionStrategy* GetSelectionStrategy() const override;
-        inline void SetSelectionStrategy(ISubscriberSelectionStrategy* strategy) noexcept override;
 };
 
 // Thrown when SubscriberFamily's registration manager is null

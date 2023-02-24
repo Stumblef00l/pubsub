@@ -7,17 +7,15 @@ namespace pubsub {
 
 class ISubscriber {
     public:
-        typedef std::string SubscriberID;
-
-        virtual SubscriberID GetID() const = 0; 
+        virtual PubsubSubscriberId GetID() const; 
         virtual void Update(PubsubMessage message) = 0;
 
         virtual ~ISubscriber() {}
 
     protected:
-        ISubscriber(const SubscriberID id);
+        ISubscriber(PubsubSubscriberId id);
 
-        const SubscriberID id_;
+        const PubsubSubscriberId id_;
 };
 
 } // namespace pubsub

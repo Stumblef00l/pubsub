@@ -1,6 +1,7 @@
 #include "pubsub/subscriber_family_registration_manager.hpp"
 
 #include "pubsub/subscriber.hpp"
+#include "pubsub/structs.hpp"
 
 namespace pubsub {
 
@@ -9,7 +10,7 @@ ISubscriberFamilyRegistrationManager::ISubscriberFamilyRegistrationManager() {}
 BasicSubscriberFamilyRegistrationManager::BasicSubscriberFamilyRegistrationManager()
     : ISubscriberFamilyRegistrationManager() {}
 
-void BasicSubscriberFamilyRegistrationManager::RegisterSubscriber(ISubscriber* subscriber) {
+void ISubscriberFamilyRegistrationManager::RegisterSubscriber(ISubscriber* subscriber) {
     auto id = subscriber->GetID();
 
     for(auto& registeredSubscriber: subscribers_)
@@ -19,7 +20,7 @@ void BasicSubscriberFamilyRegistrationManager::RegisterSubscriber(ISubscriber* s
     subscribers_.push_back(subscriber);
 }
 
-void BasicSubscriberFamilyRegistrationManager::UnregisterSubscriber(ISubscriber::SubscriberID id) {
+void ISubscriberFamilyRegistrationManager::UnregisterSubscriber(const PubsubSubscriberId& id) {
     for(auto idx = (size_t)0; idx < subscribers_.size(); idx++) {
         if (id == subscribers_[idx]->GetID()) {
             subscribers_.erase(subscribers_.begin() + idx);
@@ -30,11 +31,11 @@ void BasicSubscriberFamilyRegistrationManager::UnregisterSubscriber(ISubscriber:
     throw SubscriberNotFoundException();
 }
 
-inline std::vector<ISubscriber*> BasicSubscriberFamilyRegistrationManager::GetSubscribers() const {
+inline std::vector<ISubscriber*> ISubscriberFamilyRegistrationManager::GetSubscribers() const {
     return subscribers_;
 }
 
-ISubscriber* BasicSubscriberFamilyRegistrationManager::GetSubscriber(ISubscriber::SubscriberID id) const {
+ISubscriber* ISubscriberFamilyRegistrationManager::GetSubscriber(const PubsubMessageId& id) const {
     for(auto& subscriber: subscribers_)
         if (id == subscriber->GetID())
             return subscriber;

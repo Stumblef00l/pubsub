@@ -1,8 +1,16 @@
 #include "pubsub/subscriber.hpp"
 
+#include <utility>
+
+#include "pubsub/structs.hpp"
+
 namespace pubsub {
 
-ISubscriber::ISubscriber(const ISubscriber::SubscriberID id)
-    : id_(id) {}
+ISubscriber::ISubscriber(PubsubSubscriberId id)
+    : id_(std::move(id)) {}
+
+inline PubsubSubscriberId ISubscriber::GetID() const {
+    return id_;
+}
 
 } // namespace pubsub

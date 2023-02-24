@@ -5,16 +5,17 @@
 #include <vector>
 
 #include "subscriber.hpp"
+#include "structs.hpp"
 
 namespace pubsub {
 
 class ISubscriberFamilyRegistrationManager {
     public:
 
-        virtual void RegisterSubscriber(ISubscriber* subscriber) = 0;
-        virtual void UnregisterSubscriber(ISubscriber::SubscriberID id) = 0;
-        virtual std::vector<ISubscriber*> GetSubscribers() const = 0;
-        virtual ISubscriber* GetSubscriber(ISubscriber::SubscriberID id) const = 0;
+        virtual void RegisterSubscriber(ISubscriber* subscriber);
+        virtual void UnregisterSubscriber(const PubsubSubscriberId& id);
+        virtual std::vector<ISubscriber*> GetSubscribers() const;
+        virtual ISubscriber* GetSubscriber(const PubsubSubscriberId& id) const;
 
         virtual ~ISubscriberFamilyRegistrationManager() {}
 
@@ -27,11 +28,6 @@ class ISubscriberFamilyRegistrationManager {
 class BasicSubscriberFamilyRegistrationManager: public ISubscriberFamilyRegistrationManager {
     public:
         BasicSubscriberFamilyRegistrationManager();
-
-        void RegisterSubscriber(ISubscriber* subscriber) override;
-        void UnregisterSubscriber(ISubscriber::SubscriberID id) override;
-        std::vector<ISubscriber*> GetSubscribers() const override;
-        ISubscriber* GetSubscriber(ISubscriber::SubscriberID id) const override;
 };
 
 

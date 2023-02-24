@@ -17,11 +17,10 @@ BasicSynchronousPublisher::BasicSynchronousPublisher(
     : IPublisher(std::move(subscriber_family_manager)) {}
 
 ISubscriberFamilyManager*
-BasicSynchronousPublisher::GetSubscriberFamilyManager() const {
+IPublisher::GetSubscriberFamilyManager() const {
     auto s = subscriber_family_manager_.get();
-    if (s == nullptr || s == NULL) {
+    if (s == nullptr || s == NULL)
         throw NullSubscriberFamilyManagerException();
-    }
 
     return s;
 }

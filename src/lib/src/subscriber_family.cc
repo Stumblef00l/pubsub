@@ -10,7 +10,7 @@
 namespace pubsub {
 
 ISubscriberFamily::ISubscriberFamily(
-    const ISubscriberFamily::SubscriberFamilyID id,
+    const PubsubSubscriberFamilyId id,
     ISubscriberFamily::ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
     ISubscriberSelectionStrategy* selection_strategy)
     : id_(id),
@@ -18,7 +18,7 @@ ISubscriberFamily::ISubscriberFamily(
       selection_strategy_(std::move(selection_strategy)) {}
 
 BasicSubscriberFamily::BasicSubscriberFamily(
-    const SubscriberFamilyID id,
+    const PubsubSubscriberFamilyId id,
     ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
     ISubscriberSelectionStrategy* selection_strategy)
     : ISubscriberFamily(
@@ -26,30 +26,30 @@ BasicSubscriberFamily::BasicSubscriberFamily(
         std::move(registration_manager),
         std::move(selection_strategy)) {}
 
-inline ISubscriberFamily::SubscriberFamilyID
-BasicSubscriberFamily::GetID() const noexcept {
+inline PubsubSubscriberFamilyId
+ISubscriberFamily::GetID() const {
     return id_;
 }
 
 ISubscriberFamilyRegistrationManager*
-BasicSubscriberFamily::GetRegistrationManager() const {
+ISubscriberFamily::GetRegistrationManager() const {
     if (registration_manager_ == nullptr)
         throw NullSubscriberFamilyRegistrationManagerException();
     return registration_manager_.get();
 }
 
 ISubscriberSelectionStrategy*
-BasicSubscriberFamily::GetSelectionStrategy() const {
+ISubscriberFamily::GetSelectionStrategy() const {
     if (selection_strategy_ == nullptr)
         throw NullSubscriberFamilySelectionStrategyException();
     return selection_strategy_;
 }
 
-inline void BasicSubscriberFamily::SetSelectionStrategy(ISubscriberSelectionStrategy* strategy) noexcept {
+inline void ISubscriberFamily::SetSelectionStrategy(ISubscriberSelectionStrategy* strategy) {
     selection_strategy_ = strategy;
 }
 
-void BasicSubscriberFamily::Publish(PubsubMessage message) {
+void ISubscriberFamily::Publish(PubsubMessage message) {
     if (registration_manager_ == nullptr)
         throw NullSubscriberFamilyRegistrationManagerException();
     if (selection_strategy_ == nullptr)

@@ -40,8 +40,6 @@ class BasicSynchronousPublisher: public IPublisher {
         // Synchronously publishes the message to all subscribers, configured in the
         // subscriber family specified in the message.
         void Publish(PubsubMessage message) override;
-        // Gets the associated ISubscriberFamilyManager
-        ISubscriberFamilyManager* GetSubscriberFamilyManager() const;
 };
 
 // Thrown when SubscriberFamilyManager is null

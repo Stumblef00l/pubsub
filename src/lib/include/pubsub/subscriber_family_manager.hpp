@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "subscriber_family.hpp"
+#include "structs.hpp"
 
 namespace pubsub {
 
@@ -13,9 +14,9 @@ class ISubscriberFamilyManager {
     public:
         typedef std::unique_ptr<ISubscriberFamily> ISubscriberFamilyUniquePtr;
 
-        virtual void CreateSubscriberFamily(ISubscriberFamilyUniquePtr subscriber_family) = 0;
-        virtual void DeleteSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) = 0;
-        virtual ISubscriberFamily* GetSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) const = 0;
+        virtual void CreateSubscriberFamily(ISubscriberFamilyUniquePtr subscriber_family);
+        virtual void DeleteSubscriberFamily(const PubsubSubscriberFamilyId& family_id);
+        virtual ISubscriberFamily* GetSubscriberFamily(const PubsubSubscriberFamilyId& family_id) const;
 
         virtual ~ISubscriberFamilyManager() {}
 
@@ -28,10 +29,6 @@ class ISubscriberFamilyManager {
 class BasicSubscriberFamilyManager: public ISubscriberFamilyManager {
     public:
         BasicSubscriberFamilyManager();
-
-        void CreateSubscriberFamily(ISubscriberFamilyUniquePtr subscriber_family) override;
-        void DeleteSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) override;
-        ISubscriberFamily* GetSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) const override;
 };
 
 

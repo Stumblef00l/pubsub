@@ -12,7 +12,7 @@ ISubscriberFamilyManager::ISubscriberFamilyManager() {}
 BasicSubscriberFamilyManager::BasicSubscriberFamilyManager()
     : ISubscriberFamilyManager() {}
 
-void BasicSubscriberFamilyManager::CreateSubscriberFamily(
+void ISubscriberFamilyManager::CreateSubscriberFamily(
     std::unique_ptr<ISubscriberFamily> subscriber_family) {
     auto id = subscriber_family->GetID();
 
@@ -23,10 +23,10 @@ void BasicSubscriberFamilyManager::CreateSubscriberFamily(
     subscriber_family_list_.push_back(std::move(subscriber_family));
 }
 
-void BasicSubscriberFamilyManager::DeleteSubscriberFamily(
-    const ISubscriberFamily::SubscriberFamilyID& familyID) {
+void ISubscriberFamilyManager::DeleteSubscriberFamily(
+    const PubsubSubscriberFamilyId& family_id) {
     for(auto idx = (size_t)0; idx < subscriber_family_list_.size(); idx++) {
-        if (familyID == subscriber_family_list_[idx]->GetID()) {
+        if (family_id == subscriber_family_list_[idx]->GetID()) {
             subscriber_family_list_.erase(subscriber_family_list_.begin() + idx);
             return;
         }
@@ -36,10 +36,10 @@ void BasicSubscriberFamilyManager::DeleteSubscriberFamily(
 }
 
 ISubscriberFamily*
-BasicSubscriberFamilyManager::GetSubscriberFamily(
-    const ISubscriberFamily::SubscriberFamilyID& familyID) const {
+ISubscriberFamilyManager::GetSubscriberFamily(
+    const PubsubSubscriberFamilyId& family_id) const {
     for(auto idx = (size_t)0; idx < subscriber_family_list_.size(); idx++) {
-        if (familyID == subscriber_family_list_[idx]->GetID())
+        if (family_id == subscriber_family_list_[idx]->GetID())
             return subscriber_family_list_[idx].get();
     }
 
