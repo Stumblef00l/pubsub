@@ -14,11 +14,11 @@ class ISubscriberSelectionStrategy {
         virtual ~ISubscriberSelectionStrategy() {}
 };
 
-class RoundRobinSubscriberSelectionStrategy {
+class RoundRobinSubscriberSelectionStrategy: public ISubscriberSelectionStrategy {
     public:
         RoundRobinSubscriberSelectionStrategy();
 
-        std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers);
+        std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) override;
     
     private:
         size_t current_selected_index_;

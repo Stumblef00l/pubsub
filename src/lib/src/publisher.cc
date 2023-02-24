@@ -28,7 +28,7 @@ IPublisher::GetSubscriberFamilyManager() const {
 void BasicSynchronousPublisher::Publish(
     PubsubMessage message) {
     auto s = subscriber_family_manager_.get();
-    auto family = s->GetSubscriberFamily(message.family_id);
+    auto family = s->GetFamily(message.family_id);
     family->Publish(std::move(message));
 }
 

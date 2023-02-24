@@ -23,7 +23,7 @@ class ISubscriberFamily {
 
     protected:
         ISubscriberFamily(
-            const PubsubSubscriberFamilyId id,
+            PubsubSubscriberFamilyId id,
             ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
             ISubscriberSelectionStrategy* selection_strategy);
     

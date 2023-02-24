@@ -10,10 +10,10 @@
 namespace pubsub {
 
 ISubscriberFamily::ISubscriberFamily(
-    const PubsubSubscriberFamilyId id,
+    PubsubSubscriberFamilyId id,
     ISubscriberFamily::ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
     ISubscriberSelectionStrategy* selection_strategy)
-    : id_(id),
+    : id_(std::move(id)),
       registration_manager_(std::move(registration_manager)),
       selection_strategy_(std::move(selection_strategy)) {}
 

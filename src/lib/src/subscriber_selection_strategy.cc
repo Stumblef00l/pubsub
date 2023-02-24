@@ -15,7 +15,9 @@ RoundRobinSubscriberSelectionStrategy::Select(const std::vector<ISubscriber*>& s
     if(current_selected_index_ >= subscribers.size())
         current_selected_index_ = 0;
     
-    auto selected_subscribers_list = std::vector<ISubscriber*>{ subscribers[0] };
+    auto selected_subscribers_list = std::vector<ISubscriber*>{ subscribers[current_selected_index_] };
+    current_selected_index_++;
+
     return selected_subscribers_list;
 }
 

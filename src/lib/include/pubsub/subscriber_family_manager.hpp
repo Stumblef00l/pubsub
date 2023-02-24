@@ -14,9 +14,9 @@ class ISubscriberFamilyManager {
     public:
         typedef std::unique_ptr<ISubscriberFamily> ISubscriberFamilyUniquePtr;
 
-        virtual void CreateSubscriberFamily(ISubscriberFamilyUniquePtr subscriber_family);
-        virtual void DeleteSubscriberFamily(const PubsubSubscriberFamilyId& family_id);
-        virtual ISubscriberFamily* GetSubscriberFamily(const PubsubSubscriberFamilyId& family_id) const;
+        virtual void CreateFamily(ISubscriberFamilyUniquePtr subscriber_family);
+        virtual void DeleteFamily(const PubsubSubscriberFamilyId& family_id);
+        virtual ISubscriberFamily* GetFamily(const PubsubSubscriberFamilyId& family_id) const;
 
         virtual ~ISubscriberFamilyManager() {}
 

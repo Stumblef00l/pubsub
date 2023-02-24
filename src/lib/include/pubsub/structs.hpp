@@ -18,6 +18,14 @@ typedef std::string PubsubMessagePayload;
 typedef std::string PubsubSubscriberId;
 
 struct PubsubMessage {
+    PubsubMessage(
+      PubsubMessageId id,
+      PubsubSubscriberFamilyId family_id,
+      PubsubMessagePayload payload)
+      : id(std::move(id)),
+        family_id(std::move(family_id)),
+        payload(std::move(payload)) {}
+
     PubsubMessage(PubsubMessage&& message)
     : id(std::move(message.id)),
       family_id(std::move(message.family_id)),
