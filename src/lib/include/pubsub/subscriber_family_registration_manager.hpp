@@ -16,6 +16,8 @@ class ISubscriberFamilyRegistrationManager {
         virtual std::vector<ISubscriber*> GetSubscribers() const = 0;
         virtual ISubscriber* GetSubscriber(ISubscriber::SubscriberID id) const = 0;
 
+        virtual ~ISubscriberFamilyRegistrationManager() {}
+
     protected:
         ISubscriberFamilyRegistrationManager();
 

@@ -12,6 +12,8 @@ class ISubscriber {
         virtual SubscriberID GetID() const = 0; 
         virtual void Update(PubsubMessage message) = 0;
 
+        virtual ~ISubscriber() {}
+
     protected:
         ISubscriber(const SubscriberID id);
 

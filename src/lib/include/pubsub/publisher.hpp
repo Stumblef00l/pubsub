@@ -22,6 +22,8 @@ class IPublisher {
         // Implements getter for the SubscriberFamilyManager instance
         virtual ISubscriberFamilyManager* GetSubscriberFamilyManager() const;
 
+        virtual ~IPublisher() {}
+
     protected:
         // Constructor
         IPublisher(ISubscriberFamilyManagerUniquePtr subscriber_family_manager);

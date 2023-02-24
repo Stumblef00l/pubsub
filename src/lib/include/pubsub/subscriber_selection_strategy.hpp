@@ -10,6 +10,8 @@ namespace pubsub {
 class ISubscriberSelectionStrategy {
     public:
         virtual std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) = 0;
+
+        virtual ~ISubscriberSelectionStrategy() {}
 };
 
 class RoundRobinSubscriberSelectionStrategy {

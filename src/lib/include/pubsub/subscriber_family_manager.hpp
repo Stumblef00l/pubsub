@@ -17,6 +17,8 @@ class ISubscriberFamilyManager {
         virtual void DeleteSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) = 0;
         virtual ISubscriberFamily* GetSubscriberFamily(const ISubscriberFamily::SubscriberFamilyID& family_id) const = 0;
 
+        virtual ~ISubscriberFamilyManager() {}
+
     protected:
         ISubscriberFamilyManager();
 

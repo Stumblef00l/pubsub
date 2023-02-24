@@ -20,6 +20,8 @@ class ISubscriberFamily {
         virtual ISubscriberSelectionStrategy* GetSelectionStrategy() const = 0;
         virtual void SetSelectionStrategy(ISubscriberSelectionStrategy* strategy) = 0;
 
+        virtual ~ISubscriberFamily() {}
+
     protected:
         ISubscriberFamily(
             const SubscriberFamilyID id,

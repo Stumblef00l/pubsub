@@ -9,11 +9,11 @@ TEST(BasicSynchronousPublisherTest, GetSubscriberFamilyManager) {
     auto sfMgrPtr = sfMgr.get();
     std::unique_ptr<pubsub::IPublisher> workingPublisher = std::make_unique<pubsub::BasicSynchronousPublisher>(std::move(sfMgr));
     
-    EXPECT_EQ(workingPublisher->getSubscriberFamilyManager(), sfMgrPtr);
+    EXPECT_EQ(workingPublisher->GetSubscriberFamilyManager(), sfMgrPtr);
 }
 
 TEST(BasicSynchronousPublisherTest, GetNullSubscriberFamilyManager) {
     std::unique_ptr<pubsub::IPublisher> nullPublisher = std::make_unique<pubsub::BasicSynchronousPublisher>(nullptr);
 
-    EXPECT_THROW(nullPublisher->getSubscriberFamilyManager(), pubsub::NullSubscriberFamilyManagerException);
+    EXPECT_THROW(nullPublisher->GetSubscriberFamilyManager(), pubsub::NullSubscriberFamilyManagerException);
 }
