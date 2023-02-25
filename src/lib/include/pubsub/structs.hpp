@@ -50,6 +50,14 @@ struct PubsubMessage {
         return *this;
     }
 
+    bool operator== (const PubsubMessage& message) const {
+        return (
+          (id.compare(message.id) == 0)
+          && (family_id.compare(message.family_id) == 0)
+          && (payload.compare(message.payload) == 0)
+        );
+    }
+
     PubsubMessageId id;
     PubsubSubscriberFamilyId family_id;
     PubsubMessagePayload payload;
