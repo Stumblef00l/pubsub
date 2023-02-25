@@ -3,9 +3,9 @@
 
 #include <memory>
 
+#include "structs.hpp"
 #include "subscriber_family_registration_manager.hpp"
 #include "subscriber_selection_strategy.hpp"
-#include "structs.hpp"
 
 namespace pubsub {
 

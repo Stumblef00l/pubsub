@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "subscriber.hpp"
 #include "structs.hpp"
+#include "subscriber.hpp"
 
 namespace pubsub {
 

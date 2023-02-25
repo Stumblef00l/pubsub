@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "subscriber_family.hpp"
 #include "structs.hpp"
+#include "subscriber_family.hpp"
 
 namespace pubsub {
 
