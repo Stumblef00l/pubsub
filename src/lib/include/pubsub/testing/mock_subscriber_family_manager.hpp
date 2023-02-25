@@ -12,8 +12,8 @@ namespace testing {
 
 class MockSubscriberFamilyManager: public ISubscriberFamilyManager {
     public:
-        MockSubscriberFamilyManager(): ISubscriberFamilyManager() {};
-
+        MockSubscriberFamilyManager() {}
+        
         MOCK_METHOD(void, CreateFamily, (ISubscriberFamilyUniquePtr subscriber_family), (override));
         MOCK_METHOD(void, DeleteFamily, (const PubsubSubscriberFamilyId& family_id), (override));
         MOCK_METHOD(ISubscriberFamily*, GetFamily, (const PubsubSubscriberFamilyId& family_id), (const, override));

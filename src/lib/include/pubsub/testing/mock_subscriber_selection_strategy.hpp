@@ -13,8 +13,8 @@ namespace testing {
 
 class MockSubscriberSelectionStrategy: public ISubscriberSelectionStrategy {
     public:
-        MockSubscriberSelectionStrategy(): ISubscriberSelectionStrategy() {}
-
+        MockSubscriberSelectionStrategy() {}
+        
         MOCK_METHOD(std::vector<ISubscriber*>, Select, (const std::vector<ISubscriber*>& subscribers), (override));
 };
 

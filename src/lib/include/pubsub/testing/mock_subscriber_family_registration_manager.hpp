@@ -12,9 +12,8 @@ namespace testing {
 
 class MockSubscriberFamilyRegistrationManager: public ISubscriberFamilyRegistrationManager {
     public:
-        MockSubscriberFamilyRegistrationManager()
-        : ISubscriberFamilyRegistrationManager() {}
-
+        MockSubscriberFamilyRegistrationManager() {}
+        
         MOCK_METHOD(void, RegisterSubscriber, (ISubscriber* subscriber), (override));
         MOCK_METHOD(void, UnregisterSubscriber, (const PubsubSubscriberId& id), (override));
         MOCK_METHOD(std::vector<ISubscriber*>, GetSubscribers, (), (const, override));

@@ -3,6 +3,7 @@
 
 #include "pubsub/publisher.hpp"
 
+#include <memory>
 #include <utility>
 
 #include "gmock/gmock.h"
@@ -13,8 +14,7 @@ namespace pubsub {
 namespace testing {
 
 class MockPublisher: public IPublisher {
-    MockPublisher(ISubscriberFamilyManagerUniquePtr family_manager)
-    : IPublisher(std::move(family_manager)) {}
+    MockPublisher(): IPublisher(nullptr) {}
     
     MOCK_METHOD(void, Publish, (PubsubMessage message), (override));
     MOCK_METHOD(ISubscriberFamilyManager*, GetSubscriberFamilyManager, (), (const, override));

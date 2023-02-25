@@ -13,9 +13,8 @@ namespace testing {
 
 class MockSubscriber: public ISubscriber {
     public:
-
-        MockSubscriber(PubsubSubscriberId id): ISubscriber(std::move(id)) {}
-
+        MockSubscriber(): ISubscriber("") {}
+        
         MOCK_METHOD(PubsubSubscriberId, GetID, (), (const, override)); 
         MOCK_METHOD(void, Update, (PubsubMessage message), (override));
 };

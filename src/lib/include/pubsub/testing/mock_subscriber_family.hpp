@@ -9,17 +9,15 @@
 #include "pubsub/structs.hpp"
 #include "pubsub/subscriber_family_registration_manager.hpp"
 #include "pubsub/subscriber_selection_strategy.hpp"
+#include "pubsub/testing/mock_subscriber_family_registration_manager.hpp"
+#include "pubsub/testing/mock_subscriber_selection_strategy.hpp"
 
 namespace pubsub {
 namespace testing {
 
 class MockSubscriberFamily: public ISubscriberFamily {
     public:
-        MockSubscriberFamily(
-            PubsubSubscriberFamilyId id,
-            ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
-            ISubscriberSelectionStrategy* selection_strategy)
-            : ISubscriberFamily(std::move(id), std::move(registration_manager), selection_strategy) {}
+        MockSubscriberFamily(): ISubscriberFamily("", nullptr, nullptr) {}
         
         MOCK_METHOD(void, Publish, (PubsubMessage message), (override));
         MOCK_METHOD(PubsubSubscriberFamilyId, GetID, (), (const, override)); 
