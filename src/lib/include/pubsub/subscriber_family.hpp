@@ -1,5 +1,5 @@
-#ifndef _SUBSCRIBER_FAMILY_HPP_
-#define _SUBSCRIBER_FAMILY_HPP_
+#ifndef _PUBSUB_SUBSCRIBER_FAMILY_HPP_
+#define _PUBSUB_SUBSCRIBER_FAMILY_HPP_
 
 #include <memory>
 

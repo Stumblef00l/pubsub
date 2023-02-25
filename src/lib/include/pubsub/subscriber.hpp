@@ -1,5 +1,5 @@
-#ifndef _SUBSCRIBER_HPP_
-#define _SUBSCRIBER_HPP_
+#ifndef _PUBSUB_SUBSCRIBER_HPP_
+#define _PUBSUB_SUBSCRIBER_HPP_
 
 #include "structs.hpp"
 

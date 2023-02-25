@@ -17,5 +17,5 @@ cc_library(
     ],
     strip_include_prefix = "include",
     visibility = ["//visibility:public"],
-    testing_only = True
+    testonly = True
 )

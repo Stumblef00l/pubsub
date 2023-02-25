@@ -1,5 +1,5 @@
-#ifndef _STRUCTS_
-#define _STRUCTS_
+#ifndef _PUBSUB_STRUCTS_
+#define _PUBSUB_STRUCTS_
 
 #include <string>
 

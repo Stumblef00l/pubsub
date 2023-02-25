@@ -1,5 +1,5 @@
-#ifndef _PUBLISHER_HPP_
-#define _PUBLISHER_HPP_
+#ifndef _PUBSUB_PUBLISHER_HPP_
+#define _PUBSUB_PUBLISHER_HPP_
 
 #include <string>
 #include <exception>
