@@ -29,3 +29,13 @@ cc_test(
         "@com_google_googletest//:gtest_main",
     ]
 )
+
+cc_test(
+    name = "subscriber_family_registration_manager_unit_test",
+    srcs = ["subscriber_family_registration_manager_unit_test.cc"],
+    deps = [
+        "//src/lib:pubsub",
+        "//src/lib:pubsub_testing",
+        "@com_google_googletest//:gtest_main",
+    ]
+)
