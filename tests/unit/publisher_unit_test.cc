@@ -9,30 +9,35 @@
 #include "pubsub/testing/mock_subscriber_selection_strategy.hpp"
 #include "pubsub/testing/mock_subscriber_family_registration_manager.hpp"
 
+namespace {
 
-TEST(BasicSynchronousPublisherUnitTest, GetSubscriberFamilyManager) {
-    auto family_manager = std::make_unique<pubsub::testing::MockSubscriberFamilyManager>();
-    auto family_manager_ptr = family_manager.get();
-    auto publisher = std::make_unique<pubsub::BasicSynchronousPublisher>(std::move(family_manager));
+class BasicSynchronousPublisherUnitTest: public ::testing::Test {
+    protected:
+        void SetUp() override {
+            mock_family_manager = std::make_unique<pubsub::testing::MockSubscriberFamilyManager>();
+            mock_family_manager_ptr = mock_family_manager.get();
+            mock_family = std::make_unique<pubsub::testing::MockSubscriberFamily>();
+            publisher = std::make_unique<pubsub::BasicSynchronousPublisher>(std::move(mock_family_manager));
+        }
     
-    EXPECT_EQ(publisher->GetSubscriberFamilyManager(), family_manager_ptr);
+        std::unique_ptr<pubsub::BasicSynchronousPublisher> publisher;
+        std::unique_ptr<pubsub::testing::MockSubscriberFamilyManager> mock_family_manager;
+        pubsub::testing::MockSubscriberFamilyManager* mock_family_manager_ptr;
+        std::unique_ptr<pubsub::testing::MockSubscriberFamily> mock_family;
+};
+
+TEST_F(BasicSynchronousPublisherUnitTest, SimpleGetSubscriberFamilyManager) {
+    EXPECT_EQ(publisher->GetSubscriberFamilyManager(), mock_family_manager_ptr);
 }
 
-TEST(BasicSynchronousPublisherUnitTest, GetNullSubscriberFamilyManager) {
-    auto publisher = std::make_unique<pubsub::BasicSynchronousPublisher>(nullptr);
+TEST_F(BasicSynchronousPublisherUnitTest, GetNullSubscriberFamilyManager) {
+    publisher = std::make_unique<pubsub::BasicSynchronousPublisher>(nullptr);
 
     EXPECT_THROW(publisher->GetSubscriberFamilyManager(), pubsub::NullSubscriberFamilyManagerException);
 }
 
-TEST(BasicSynchronousPublisherUnitTest, SimplePublish) {
+TEST_F(BasicSynchronousPublisherUnitTest, SimplePublish) {
     using ::testing::Return;
-
-    auto mock_family_manager = std::make_unique<pubsub::testing::MockSubscriberFamilyManager>();
-    auto mock_family_manager_ptr = mock_family_manager.get();
-    auto publisher = std::make_unique<pubsub::BasicSynchronousPublisher>(std::move(mock_family_manager));
-
-    auto mock_selection = std::make_unique<pubsub::testing::MockSubscriberSelectionStrategy>();
-    auto mock_family = std::make_unique<pubsub::testing::MockSubscriberFamily>();
 
     auto test_message = pubsub::PubsubMessage {
         "test-1",
@@ -49,3 +54,5 @@ TEST(BasicSynchronousPublisherUnitTest, SimplePublish) {
 
     EXPECT_NO_THROW(publisher->Publish(test_message));
 }
+
+} // namespace
