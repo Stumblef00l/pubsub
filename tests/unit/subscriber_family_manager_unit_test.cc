@@ -1,6 +1,7 @@
 #include "pubsub/subscriber_family_manager.hpp"
 
 #include <memory>
+#include <utility>
 
 #include "gtest/gtest.h"
 #include "pubsub/testing/mock_subscriber_family.hpp"
