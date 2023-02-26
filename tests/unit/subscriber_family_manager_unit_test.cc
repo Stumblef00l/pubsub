@@ -71,8 +71,8 @@ TEST(BasicSubscriberFamilyManagerUnitTest, DeleteAlreadyDeletedFamily) {
     EXPECT_CALL((*want_family_ptr), GetID())
     .WillRepeatedly(Return("family-1"));
 
-    family_manager->CreateFamily(std::move(mock_family));
-    family_manager->DeleteFamily("family-1");
+    EXPECT_NO_THROW(family_manager->CreateFamily(std::move(mock_family)));
+    EXPECT_NO_THROW(family_manager->DeleteFamily("family-1"));
 
     EXPECT_THROW(family_manager->DeleteFamily("family-1"), pubsub::SubscriberFamilyNotFoundException);
 }
@@ -89,10 +89,8 @@ TEST(BasicSubscriberFamilyManagerUnitTest, SimpleGetFamily) {
 
     const auto& family_id = want_family_ptr->GetID();
 
-    family_manager->CreateFamily(std::move(mock_family));
-    auto got_family_ptr = family_manager->GetFamily("family-1");
-
-    EXPECT_EQ(want_family_ptr, got_family_ptr);
+    EXPECT_NO_THROW(family_manager->CreateFamily(std::move(mock_family)));
+    EXPECT_EQ(want_family_ptr, family_manager->GetFamily("family-1"));
 }
 
 TEST(BasicSubscriberFamilyManagerUnitTest, GetNonExistentFamily) {
@@ -107,8 +105,6 @@ TEST(BasicSubscriberFamilyManagerUnitTest, GetNonExistentFamily) {
     
     EXPECT_CALL((*want_family_ptr), GetID())
     .WillRepeatedly(Return("family-1"));
-
-    const auto& family_id = want_family_ptr->GetID();
 
     family_manager->CreateFamily(std::move(mock_family));
     EXPECT_THROW(family_manager->GetFamily("family-2"), pubsub::SubscriberFamilyNotFoundException);

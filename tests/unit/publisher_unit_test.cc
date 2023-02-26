@@ -47,5 +47,5 @@ TEST(BasicSynchronousPublisherUnitTest, SimplePublish) {
     EXPECT_CALL((*mock_family), Publish(test_message))
     .Times(1);
 
-    publisher->Publish(test_message);
+    EXPECT_NO_THROW(publisher->Publish(test_message));
 }

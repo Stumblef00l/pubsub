@@ -21,7 +21,7 @@ TEST(BasicSubscriberFamilyRegistrationManagerUnitTest, SimpleRegisterSubscriber)
     EXPECT_CALL((*mock_subscriber_ptr), GetID())
     .WillRepeatedly(Return("mock-subscriber"));
 
-    registration_manager->RegisterSubscriber(mock_subscriber_ptr);
+    EXPECT_NO_THROW(registration_manager->RegisterSubscriber(mock_subscriber_ptr));
     EXPECT_EQ((mock_subscriber_ptr->GetID()).compare(registration_manager->GetSubscriber("mock-subscriber")->GetID()), 0);
 }
 
@@ -35,7 +35,7 @@ TEST(BasicSubscriberFamilyRegistrationManagerUnitTest, RegisterSubscriberTwice) 
     EXPECT_CALL((*mock_subscriber_ptr), GetID())
     .WillRepeatedly(Return("mock-subscriber"));
 
-    registration_manager->RegisterSubscriber(mock_subscriber_ptr);
+    EXPECT_NO_THROW(registration_manager->RegisterSubscriber(mock_subscriber_ptr));
     EXPECT_THROW(registration_manager->RegisterSubscriber(mock_subscriber_ptr), pubsub::SubscriberAlreadyExistsException);
 }
 
@@ -49,7 +49,7 @@ TEST(BasicSubscriberFamilyRegistrationManagerUnitTest, SimpleUnregisterSubscribe
     EXPECT_CALL((*mock_subscriber_ptr), GetID())
     .WillRepeatedly(Return("mock-subscriber"));
 
-    registration_manager->RegisterSubscriber(mock_subscriber_ptr);
+    EXPECT_NO_THROW(registration_manager->RegisterSubscriber(mock_subscriber_ptr));
     EXPECT_NO_THROW(registration_manager->UnregisterSubscriber(mock_subscriber_ptr->GetID()));
     EXPECT_THROW(registration_manager->GetSubscriber(mock_subscriber_ptr->GetID()), pubsub::SubscriberNotFoundException);
 }
@@ -71,7 +71,7 @@ TEST(BasicSubscriberFamilyRegistrationManagerUnitTest, SimpleGetSubscriber) {
     EXPECT_CALL((*mock_subscriber_ptr), GetID())
     .WillRepeatedly(Return("mock-subscriber"));
 
-    registration_manager->RegisterSubscriber(mock_subscriber_ptr);
+    EXPECT_NO_THROW(registration_manager->RegisterSubscriber(mock_subscriber_ptr));
     EXPECT_EQ(registration_manager->GetSubscriber(mock_subscriber_ptr->GetID()), mock_subscriber_ptr);
 }
 
@@ -97,15 +97,15 @@ TEST(BasicSubscriberFamilyRegistrationManagerUnitTest, SimpleGetSubscribers) {
         .WillRepeatedly(Return("mock-subscriber" + std::to_string(idx)));
 
         subscribers_uptrs.push_back(std::move(mock_subscriber));
-        registration_manager->RegisterSubscriber(mock_subscriber_ptr);
+        EXPECT_NO_THROW(registration_manager->RegisterSubscriber(mock_subscriber_ptr));
     }
 
     auto want_ptr_list = pubsub::utils::ConvertUniquePtrListToRawPointerList(subscribers_uptrs);
     auto got_ptr_list = registration_manager->GetSubscribers();
     EXPECT_EQ(want_ptr_list.size(), got_ptr_list.size());
 
-    std::sort(want_ptr_list.begin(), want_ptr_list.end(), pubsub::utils::CompareSubscribers); 
-    std::sort(got_ptr_list.begin(), got_ptr_list.end(), pubsub::utils::CompareSubscribers); 
+    std::sort(want_ptr_list.begin(), want_ptr_list.end(), pubsub::utils::LexicographicCompareSubscribers); 
+    std::sort(got_ptr_list.begin(), got_ptr_list.end(), pubsub::utils::LexicographicCompareSubscribers); 
 
     for(auto idx = (size_t)0; idx < got_ptr_list.size(); idx++)
         EXPECT_EQ(want_ptr_list[idx]->GetID(), got_ptr_list[idx]->GetID());
