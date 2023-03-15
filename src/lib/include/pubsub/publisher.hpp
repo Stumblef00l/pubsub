@@ -22,13 +22,26 @@ class IPublisher {
         // Implements getter for the SubscriberFamilyManager instance
         virtual ISubscriberFamilyManager* GetSubscriberFamilyManager() const;
 
-        virtual ~IPublisher() {}
+        virtual ~IPublisher() noexcept {}
 
     protected:
         // Constructor
         IPublisher(ISubscriberFamilyManagerUniquePtr subscriber_family_manager);
         
         ISubscriberFamilyManagerUniquePtr subscriber_family_manager_;
+};
+
+class IPublisherDecorator: public IPublisher {
+
+    public:
+        virtual void Publish(PubsubMessage message) override = 0;
+        virtual ISubscriberFamilyManager* GetSubscriberFamilyManager() const override;
+        virtual ~IPublisherDecorator() noexcept {}
+    
+    protected:
+        IPublisherDecorator(std::unique_ptr<IPublisher> publisher);
+
+        std::unique_ptr<IPublisher> publisher_;
 };
 
 // Implements a synchronous publisher. Implements the IPublisher interface.

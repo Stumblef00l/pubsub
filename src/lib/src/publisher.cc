@@ -12,6 +12,15 @@ IPublisher::IPublisher(
     IPublisher::ISubscriberFamilyManagerUniquePtr subscriber_family_manager)
     : subscriber_family_manager_(std::move(subscriber_family_manager)) {}
 
+IPublisherDecorator::IPublisherDecorator(std::unique_ptr<IPublisher> publisher)
+    : IPublisher(nullptr), // Don't use the inherited data members from the IPublisher interface. Instead, use publisher_.
+      publisher_(std::move(publisher)) {}
+
+ISubscriberFamilyManager*
+IPublisherDecorator::GetSubscriberFamilyManager() const {
+    return publisher_->GetSubscriberFamilyManager();
+}
+
 BasicSynchronousPublisher::BasicSynchronousPublisher(
     IPublisher::ISubscriberFamilyManagerUniquePtr subscriber_family_manager)
     : IPublisher(std::move(subscriber_family_manager)) {}
