@@ -25,11 +25,23 @@ class ISubscriberFamilyRegistrationManager {
         std::vector<ISubscriber*> subscribers_;
 };
 
+class IThreadSafeSubscriberFamilyRegistrationManager: public ISubscriberFamilyRegistrationManager {
+    public:
+        virtual ~IThreadSafeSubscriberFamilyRegistrationManager() noexcept {}
+
+    protected:
+        IThreadSafeSubscriberFamilyRegistrationManager();
+};
+
 class BasicSubscriberFamilyRegistrationManager: public ISubscriberFamilyRegistrationManager {
     public:
         BasicSubscriberFamilyRegistrationManager();
 };
 
+class BasicThreadSafeSubscriberFamilyRegistrationManager: public IThreadSafeSubscriberFamilyRegistrationManager {
+    public:
+        BasicThreadSafeSubscriberFamilyRegistrationManager();
+};
 
 // Thrown when trying to register a subscriber that is already registered
 class SubscriberAlreadyExistsException: public std::exception {

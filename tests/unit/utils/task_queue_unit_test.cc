@@ -10,7 +10,7 @@ namespace {
 
 class OrderedThreadSafeTaskQueueUnitTest: public ::testing::Test {
     protected:
-        constexpr static size_t TEST_CAPACITY = 3;
+        static constexpr size_t TEST_CAPACITY = 3;
 
         void SetUp() override {
             queue_ = std::make_unique<pubsub::utils::OrderedThreadSafeTaskQueue<int>>(TEST_CAPACITY);

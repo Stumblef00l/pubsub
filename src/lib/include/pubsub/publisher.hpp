@@ -7,6 +7,7 @@
 
 #include "structs.hpp"
 #include "subscriber_family_manager.hpp"
+#include "utils/task_queue.hpp"
 
 namespace pubsub {
 
@@ -31,17 +32,16 @@ class IPublisher {
         ISubscriberFamilyManagerUniquePtr subscriber_family_manager_;
 };
 
-class IPublisherDecorator: public IPublisher {
+// Provides an interface for async publishers. Just passthrough to IPublisher.
+// Used to allow depending on async specific implementations in client code.
+class IAsyncPublisher: public IPublisher {
 
     public:
-        virtual void Publish(PubsubMessage message) override = 0;
-        virtual ISubscriberFamilyManager* GetSubscriberFamilyManager() const override;
-        virtual ~IPublisherDecorator() noexcept {}
+        virtual ~IAsyncPublisher() noexcept {}
     
     protected:
-        IPublisherDecorator(std::unique_ptr<IPublisher> publisher);
-
-        std::unique_ptr<IPublisher> publisher_;
+        IAsyncPublisher(
+            ISubscriberFamilyManagerUniquePtr subscriber_family_manager);
 };
 
 // Implements a synchronous publisher. Implements the IPublisher interface.
@@ -53,6 +53,17 @@ class BasicSynchronousPublisher: public IPublisher {
         // Synchronously publishes the message to all subscribers, configured in the
         // subscriber family specified in the message.
         void Publish(PubsubMessage message) override;
+};
+
+class BasicAsyncPublisher: public IAsyncPublisher {
+
+    public:
+        typedef std::unique_ptr<IThreadSafeSubscriberFamilyManager> IThreadSafeSubscriberFamilyManagerUniquePtr;
+        typedef std::unique_ptr<utils::IThreadSafeTaskQueue<PubsubMessage>> IThreadSafeMessageQueueUniquePtr;
+        
+        BasicAsyncPublisher(
+            IThreadSafeSubscriberFamilyManagerUniquePtr subscriber_family,
+            IThreadSafeMessageQueueUniquePtr message_queue);
 };
 
 // Thrown when SubscriberFamilyManager is null

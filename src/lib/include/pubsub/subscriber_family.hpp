@@ -32,12 +32,34 @@ class ISubscriberFamily {
         ISubscriberSelectionStrategy* selection_strategy_;
 };
 
+class IThreadSafeSubscriberFamily: public ISubscriberFamily {
+
+    public:
+        virtual ~IThreadSafeSubscriberFamily();
+    
+    protected:
+        IThreadSafeSubscriberFamily(
+            PubsubSubscriberFamilyId id,
+            ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
+            ISubscriberSelectionStrategy* selection_strategy);
+};
+
 class BasicSubscriberFamily : public ISubscriberFamily {
     public:
         BasicSubscriberFamily(
             const PubsubSubscriberFamilyId id,
             ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
             ISubscriberSelectionStrategy* selection_strategy);
+};
+
+class BasicThreadSafeSubscriberFamily : public IThreadSafeSubscriberFamily {
+
+    public:
+        BasicThreadSafeSubscriberFamily(
+            PubsubSubscriberFamilyId id,
+            IThreadSafeSubscriberFamilyRegistrationManager registry_manager,
+            IThreadSafeSubscriberSelectionStrategy* selection_strategy);
+        
 };
 
 // Thrown when SubscriberFamily's registration manager is null

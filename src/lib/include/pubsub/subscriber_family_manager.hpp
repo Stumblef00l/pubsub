@@ -26,9 +26,23 @@ class ISubscriberFamilyManager {
         std::vector<ISubscriberFamilyUniquePtr> subscriber_family_list_;
 };
 
+class IThreadSafeSubscriberFamilyManager: public ISubscriberFamilyManager {
+    
+    public:
+        virtual ~IThreadSafeSubscriberFamilyManager() noexcept {}
+    
+    protected:
+        IThreadSafeSubscriberFamilyManager();
+};
+
 class BasicSubscriberFamilyManager: public ISubscriberFamilyManager {
     public:
         BasicSubscriberFamilyManager();
+};
+
+class BasicThreadSafeSubscriberFamilyManager: public IThreadSafeSubscriberFamilyManager {
+    public:
+        BasicThreadSafeSubscriberFamilyManager();
 };
 
 

@@ -14,11 +14,24 @@ class ISubscriberSelectionStrategy {
         virtual ~ISubscriberSelectionStrategy() {}
 };
 
+class IThreadSafeSubscriberSelectionStrategy: public ISubscriberSelectionStrategy {
+    public:
+        virtual ~IThreadSafeSubscriberSelectionStrategy() {}
+};
+
 class RoundRobinSubscriberSelectionStrategy: public ISubscriberSelectionStrategy {
     public:
         RoundRobinSubscriberSelectionStrategy();
 
         std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) override;
+    
+    private:
+        size_t current_selected_index_;
+};
+
+class ThreadSafeRoundRobinSubscriberSelectionStrategy: public IThreadSafeSubscriberSelectionStrategy {
+    public:
+        ThreadSafeRoundRobinSubscriberSelectionStrategy();
     
     private:
         size_t current_selected_index_;
