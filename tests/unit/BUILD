@@ -49,3 +49,14 @@ cc_test(
         "@com_google_googletest//:gtest_main",
     ]
 )
+
+cc_test(
+    name = "utils/task_queue_unit_test",
+    srcs = ["utils/task_queue_unit_test.cc"],
+    deps = [
+        "//src/lib:pubsub",
+        "//src/lib:pubsub_testing",
+        "@com_google_googletest//:gtest_main",
+    ],
+    linkopts = ["-lpthread"],
+)

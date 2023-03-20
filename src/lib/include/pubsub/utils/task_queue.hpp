@@ -11,18 +11,21 @@
 namespace pubsub {
 namespace utils {
 
+// Declarations
+
 template<class TaskType>
 class IThreadSafeTaskQueue {
     public:
         // Waits (suspends thread) until queue is available for queueing again
-        virtual void Enqueue(PubsubMessage message) = 0;
+        virtual void Enqueue(TaskType message) = 0;
 
         // Waits (suspends thread) until queue becomes non-empty
         virtual TaskType Dequeue() = 0;
         virtual bool IsEmpty() const = 0;
         virtual bool IsFull() const = 0;
+        virtual size_t GetSize() const = 0;
 
-        virtual ~IThreadSafeMessageQueue() noexcept {}
+        virtual ~IThreadSafeTaskQueue() noexcept {}
 
     protected:
         IThreadSafeTaskQueue(const size_t capacity);
@@ -35,22 +38,22 @@ class OrderedThreadSafeTaskQueue: public IThreadSafeTaskQueue<TaskType> {
     public:
         OrderedThreadSafeTaskQueue(const size_t capacity);
 
-        void Enqueue(PubsubMessage message) override;
+        void Enqueue(TaskType message) override;
         TaskType Dequeue() override;
         bool IsEmpty() const override;
         bool IsFull() const override;
+        size_t GetSize() const override;
     
     private:
-        bool ThreadUnsafeIsEmpty() const;
-        bool ThreadUnsafeIsFull() const;
+        size_t ThreadUnsafeGetSize() const;
 
         // We use a shared_mutex to allow multiple
         // concurrent reads
-        mutable std::shared_mutex mtx;
-        std::condition_variable_any queue_not_full_condition;
-        std::condition_variable_any queue_not_empty_condition;
+        mutable std::shared_mutex mtx_;
+        std::condition_variable_any queue_not_full_condition_;
+        std::condition_variable_any queue_not_empty_condition_;
 
-        std::queue<Task> backlog;
+        std::queue<TaskType> backlog_;
 };
 
 // Thrown when Queue is empty
@@ -79,5 +82,8 @@ class TaskQueueFullException: public std::exception {
 
 } // namespace utils
 } // namespace pubsub
+
+// Implementation
+#include "pubsub/utils/task_queue.tpp"
 
 #endif
