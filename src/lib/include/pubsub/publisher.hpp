@@ -1,9 +1,10 @@
 #ifndef _PUBSUB_PUBLISHER_HPP_
 #define _PUBSUB_PUBLISHER_HPP_
 
+#include <memory>
+#include <thread>
 #include <string>
 #include <exception>
-#include <memory>
 
 #include "structs.hpp"
 #include "subscriber_family_manager.hpp"
@@ -55,15 +56,25 @@ class BasicSynchronousPublisher: public IPublisher {
         void Publish(PubsubMessage message) override;
 };
 
-class BasicAsyncPublisher: public IAsyncPublisher {
+class OrderedAsyncPublisher: public IAsyncPublisher {
 
     public:
         typedef std::unique_ptr<IThreadSafeSubscriberFamilyManager> IThreadSafeSubscriberFamilyManagerUniquePtr;
         typedef std::unique_ptr<utils::IThreadSafeTaskQueue<PubsubMessage>> IThreadSafeMessageQueueUniquePtr;
         
-        BasicAsyncPublisher(
+        OrderedAsyncPublisher(
             IThreadSafeSubscriberFamilyManagerUniquePtr subscriber_family,
             IThreadSafeMessageQueueUniquePtr message_queue);
+        ~OrderedAsyncPublisher();
+        
+        void Publish(PubsubMessage message) override;
+        void Stop();
+    
+    private:
+        void EventLoop();
+
+        std::jthread event_loop_thread_;
+        IThreadSafeMessageQueueUniquePtr message_queue_;
 };
 
 // Thrown when SubscriberFamilyManager is null

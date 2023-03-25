@@ -18,6 +18,8 @@ typedef std::string PubsubMessagePayload;
 typedef std::string PubsubSubscriberId;
 
 struct PubsubMessage {
+    PubsubMessage() {}
+
     PubsubMessage(
       PubsubMessageId id,
       PubsubSubscriberFamilyId family_id,
