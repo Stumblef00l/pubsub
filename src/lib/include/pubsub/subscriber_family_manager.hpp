@@ -2,6 +2,7 @@
 #define _PUBSUB_SUBSCRIBER_FAMILY_MANAGER_HPP_
 
 #include <memory>
+#include <shared_mutex>
 #include <string>
 #include <vector>
 
@@ -43,6 +44,13 @@ class BasicSubscriberFamilyManager: public ISubscriberFamilyManager {
 class BasicThreadSafeSubscriberFamilyManager: public IThreadSafeSubscriberFamilyManager {
     public:
         BasicThreadSafeSubscriberFamilyManager();
+
+        void CreateFamily(ISubscriberFamilyUniquePtr subscriber_family) override;
+        void DeleteFamily(const PubsubSubscriberFamilyId& family_id) override;
+        ISubscriberFamily* GetFamily(const PubsubSubscriberFamilyId& family_id) const override;
+    
+    private:
+        std::shared_mutex mtx_;
 };
 
 

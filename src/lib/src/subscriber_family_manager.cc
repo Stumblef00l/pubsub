@@ -9,8 +9,12 @@ namespace pubsub {
 
 ISubscriberFamilyManager::ISubscriberFamilyManager() {}
 
+IThreadSafeSubscriberFamilyManager::IThreadSafeSubscriberFamilyManager(): ISubscriberFamilyManager() {}
+
 BasicSubscriberFamilyManager::BasicSubscriberFamilyManager()
     : ISubscriberFamilyManager() {}
+
+BasicThreadSafeSubscriberFamilyManager::BasicThreadSafeSubscriberFamilyManager(): IThreadSafeSubscriberFamilyManager() {}
 
 void ISubscriberFamilyManager::CreateFamily(
     ISubscriberFamilyManager::ISubscriberFamilyUniquePtr subscriber_family) {
@@ -45,6 +49,28 @@ ISubscriberFamilyManager::GetFamily(
 
     throw SubscriberFamilyNotFoundException();
     return nullptr;
+}
+
+void BasicThreadSafeSubscriberFamilyManager::CreateFamily(
+    ISubscriberFamilyManager::ISubscriberFamilyUniquePtr subscriber_family) {
+
+    std::unique_lock lck {mtx_};
+    ISubscriberFamilyManager::CreateFamily(std::move(subscriber_family));
+}
+
+void BasicThreadSafeSubscriberFamilyManager::DeleteFamily(
+    const PubsubSubscriberFamilyId& family_id) {
+
+    std::unique_lock lck {mtx_};
+    ISubscriberFamilyManager::DeleteFamily(family_id);
+}
+
+ISubscriberFamily*
+BasicThreadSafeSubscriberFamilyManager::GetFamily(
+    const PubsubSubscriberFamilyId& family_id) const {
+
+    std::shared_lock lck {mtx_};
+    return ISubscriberFamilyManager::GetFamily(family_id);
 }
 
 } // namespace pubsub
