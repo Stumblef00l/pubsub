@@ -2,6 +2,7 @@
 #define _PUBSUB_SUBSCRIBER_FAMILY_REGISTRATION_MANAGER_HPP_
 
 #include <memory>
+#include <shared_mutex>
 #include <vector>
 
 #include "structs.hpp"
@@ -41,6 +42,14 @@ class BasicSubscriberFamilyRegistrationManager: public ISubscriberFamilyRegistra
 class BasicThreadSafeSubscriberFamilyRegistrationManager: public IThreadSafeSubscriberFamilyRegistrationManager {
     public:
         BasicThreadSafeSubscriberFamilyRegistrationManager();
+
+        void RegisterSubscriber(ISubscriber* subscriber) override;
+        void UnregisterSubscriber(const PubsubSubscriberId& id) override;
+        std::vector<ISubscriber*> GetSubscribers() const override;
+        ISubscriber* GetSubscriber(const PubsubSubscriberId& id) const override;
+    
+    private:
+        std::shared_mutex subscribers_mtx_;
 };
 
 // Thrown when trying to register a subscriber that is already registered

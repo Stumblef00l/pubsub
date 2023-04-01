@@ -1,5 +1,9 @@
 #include "pubsub/subscriber_family_registration_manager.hpp"
 
+#include <memory>
+#include <mutex>
+#include <vector>
+
 #include "pubsub/subscriber.hpp"
 #include "pubsub/structs.hpp"
 
@@ -7,8 +11,13 @@ namespace pubsub {
 
 ISubscriberFamilyRegistrationManager::ISubscriberFamilyRegistrationManager() {}
 
+IThreadSafeSubscriberFamilyRegistrationManager::IThreadSafeSubscriberFamilyRegistrationManager() {}
+
 BasicSubscriberFamilyRegistrationManager::BasicSubscriberFamilyRegistrationManager()
     : ISubscriberFamilyRegistrationManager() {}
+
+BasicThreadSafeSubscriberFamilyRegistrationManager::BasicThreadSafeSubscriberFamilyRegistrationManager()
+    : IThreadSafeSubscriberFamilyRegistrationManager() {}
 
 void ISubscriberFamilyRegistrationManager::RegisterSubscriber(ISubscriber* subscriber) {
     auto id = subscriber->GetID();
@@ -41,6 +50,26 @@ ISubscriber* ISubscriberFamilyRegistrationManager::GetSubscriber(const PubsubMes
             return subscriber;
 
     throw SubscriberNotFoundException();
+}
+
+void BasicThreadSafeSubscriberFamilyRegistrationManager::RegisterSubscriber(ISubscriber* subscriber) {
+    std::unique_lock lck { subscribers_mtx_ };
+    ISubscriberFamilyRegistrationManager::RegisterSubscriber(subscriber);
+}
+
+void BasicThreadSafeSubscriberFamilyRegistrationManager::UnregisterSubscriber(const PubsubSubscriberId& id) {
+    std::unique_lock lck { subscribers_mtx_ };
+    ISubscriberFamilyRegistrationManager::UnregisterSubscriber(id);
+}
+
+std::vector<ISubscriber*> BasicThreadSafeSubscriberFamilyRegistrationManager::GetSubscribers() const {
+    std::shared_lock lck { subscribers_mtx_ };
+    return ISubscriberFamilyRegistrationManager::GetSubscribers();
+}
+
+ISubscriber* BasicThreadSafeSubscriberFamilyRegistrationManager::GetSubscriber(const PubsubMessageId& id) const {
+    std::shared_lock lck { subscribers_mtx_ };
+    return ISubscriberFamilyRegistrationManager::GetSubscriber(id);
 }
 
 } // namespace pubsub
