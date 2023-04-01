@@ -1,6 +1,7 @@
 #ifndef _PUBSUB_SUBSCRIBER_SELECTION_STRATEGY_HPP_
 #define _PUBSUB_SUBSCRIBER_SELECTION_STRATEGY_HPP_
 
+#include <mutex>
 #include <vector>
 
 #include "subscriber.hpp"
@@ -34,9 +35,12 @@ class RoundRobinSubscriberSelectionStrategy: public ISubscriberSelectionStrategy
 class ThreadSafeRoundRobinSubscriberSelectionStrategy: public IThreadSafeSubscriberSelectionStrategy {
     public:
         ThreadSafeRoundRobinSubscriberSelectionStrategy();
-    
+
+        std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) override;
+
     private:
         size_t current_selected_index_;
+        std::mutex index_mtx_;
 };
 
 } // namespace pubsub
