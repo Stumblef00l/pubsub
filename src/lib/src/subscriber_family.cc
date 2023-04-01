@@ -11,20 +11,38 @@ namespace pubsub {
 
 ISubscriberFamily::ISubscriberFamily(
     PubsubSubscriberFamilyId id,
-    ISubscriberFamily::ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
+    ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
     ISubscriberSelectionStrategy* selection_strategy)
     : id_(std::move(id)),
       registration_manager_(std::move(registration_manager)),
       selection_strategy_(std::move(selection_strategy)) {}
 
+IThreadSafeSubscriberFamily::IThreadSafeSubscriberFamily(
+    PubsubSubscriberFamilyId id,
+    IThreadSafeSubscriberFamilyRegistrationManagerUniquePtr registration_manager,
+    IThreadSafeSubscriberSelectionStrategy* selection_strategy)
+    : ISubscriberFamily(
+        std::move(id),
+        std::move(registration_manager),
+        selection_strategy) {}
+
 BasicSubscriberFamily::BasicSubscriberFamily(
-    const PubsubSubscriberFamilyId id,
+    PubsubSubscriberFamilyId id,
     ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
     ISubscriberSelectionStrategy* selection_strategy)
     : ISubscriberFamily(
-        id,
+        std::move(id),
         std::move(registration_manager),
-        std::move(selection_strategy)) {}
+        selection_strategy) {}
+    
+BasicThreadSafeSubscriberFamily::BasicThreadSafeSubscriberFamily(
+    PubsubSubscriberFamilyId id,
+    IThreadSafeSubscriberFamilyRegistrationManagerUniquePtr registration_manager,
+    IThreadSafeSubscriberSelectionStrategy* selection_strategy)
+    : IThreadSafeSubscriberFamily(
+        std::move(id),
+        std::move(registration_manager),
+        selection_strategy) {}
 
 inline PubsubSubscriberFamilyId
 ISubscriberFamily::GetID() const {

@@ -16,6 +16,8 @@ class ISubscriberSelectionStrategy {
 
 class IThreadSafeSubscriberSelectionStrategy: public ISubscriberSelectionStrategy {
     public:
+        virtual std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) = 0;
+        
         virtual ~IThreadSafeSubscriberSelectionStrategy() {}
 };
 

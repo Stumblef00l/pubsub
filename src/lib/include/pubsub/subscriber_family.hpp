@@ -33,33 +33,32 @@ class ISubscriberFamily {
 };
 
 class IThreadSafeSubscriberFamily: public ISubscriberFamily {
-
     public:
-        virtual ~IThreadSafeSubscriberFamily();
+        typedef std::unique_ptr<IThreadSafeSubscriberFamilyRegistrationManager> IThreadSafeSubscriberFamilyRegistrationManagerUniquePtr;
+        
+        virtual ~IThreadSafeSubscriberFamily() {}
     
     protected:
         IThreadSafeSubscriberFamily(
             PubsubSubscriberFamilyId id,
-            ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
-            ISubscriberSelectionStrategy* selection_strategy);
+            IThreadSafeSubscriberFamilyRegistrationManagerUniquePtr registration_manager,
+            IThreadSafeSubscriberSelectionStrategy* selection_strategy);
 };
 
-class BasicSubscriberFamily : public ISubscriberFamily {
+class BasicSubscriberFamily: public ISubscriberFamily {
     public:
         BasicSubscriberFamily(
-            const PubsubSubscriberFamilyId id,
+            PubsubSubscriberFamilyId id,
             ISubscriberFamilyRegistrationManagerUniquePtr registration_manager,
             ISubscriberSelectionStrategy* selection_strategy);
 };
 
-class BasicThreadSafeSubscriberFamily : public IThreadSafeSubscriberFamily {
-
+class BasicThreadSafeSubscriberFamily: public IThreadSafeSubscriberFamily {
     public:
         BasicThreadSafeSubscriberFamily(
             PubsubSubscriberFamilyId id,
-            IThreadSafeSubscriberFamilyRegistrationManager registry_manager,
+            IThreadSafeSubscriberFamilyRegistrationManagerUniquePtr registration_manager,
             IThreadSafeSubscriberSelectionStrategy* selection_strategy);
-        
 };
 
 // Thrown when SubscriberFamily's registration manager is null
