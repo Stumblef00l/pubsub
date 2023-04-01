@@ -1,11 +1,11 @@
 #include "pubsub/subscriber_family.hpp"
 
-#include <exception>
+#include <memory>
 #include <utility>
 
+#include "pubsub/structs.hpp"
 #include "pubsub/subscriber_family_registration_manager.hpp"
 #include "pubsub/subscriber_selection_strategy.hpp"
-#include "pubsub/structs.hpp"
 
 namespace pubsub {
 
@@ -63,11 +63,15 @@ ISubscriberFamily::GetSelectionStrategy() const {
     return selection_strategy_;
 }
 
-inline void ISubscriberFamily::SetSelectionStrategy(ISubscriberSelectionStrategy* strategy) {
+inline void
+ISubscriberFamily::SetSelectionStrategy(
+    ISubscriberSelectionStrategy* strategy) {
     selection_strategy_ = strategy;
 }
 
-void ISubscriberFamily::Publish(PubsubMessage message) {
+void
+ISubscriberFamily::Publish(
+    PubsubMessage message) {
     if (registration_manager_ == nullptr)
         throw NullSubscriberFamilyRegistrationManagerException();
     if (selection_strategy_ == nullptr)

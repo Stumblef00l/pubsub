@@ -6,10 +6,12 @@
 
 namespace pubsub {
 
-ISubscriber::ISubscriber(PubsubSubscriberId id)
+ISubscriber::ISubscriber(
+    PubsubSubscriberId id)
     : id_(std::move(id)) {}
 
-inline PubsubSubscriberId ISubscriber::GetID() const {
+inline
+PubsubSubscriberId ISubscriber::GetID() const {
     return id_;
 }
 

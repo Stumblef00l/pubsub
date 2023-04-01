@@ -7,13 +7,18 @@ namespace pubsub {
 
 class ISubscriber {
     public:
-        virtual PubsubSubscriberId GetID() const; 
-        virtual void Update(PubsubMessage message) = 0;
+        virtual
+        PubsubSubscriberId GetID() const; 
+        
+        virtual void
+        Update(PubsubMessage message) = 0;
 
-        virtual ~ISubscriber() {}
+        virtual
+        ~ISubscriber() {}
 
     protected:
-        ISubscriber(PubsubSubscriberId id);
+        ISubscriber(
+            PubsubSubscriberId id);
 
         const PubsubSubscriberId id_;
 };

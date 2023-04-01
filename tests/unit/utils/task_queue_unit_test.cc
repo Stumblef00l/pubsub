@@ -10,12 +10,12 @@ namespace {
 
 class OrderedThreadSafeTaskQueueUnitTest: public ::testing::Test {
     protected:
-        static constexpr size_t TEST_CAPACITY = 3;
-
-        void SetUp() override {
+        void
+        SetUp() override {
             queue_ = std::make_unique<pubsub::utils::OrderedThreadSafeTaskQueue<int>>(TEST_CAPACITY);
         }
 
+        static constexpr size_t TEST_CAPACITY = 3;
         std::unique_ptr<pubsub::utils::IThreadSafeTaskQueue<int>> queue_;
 };
 

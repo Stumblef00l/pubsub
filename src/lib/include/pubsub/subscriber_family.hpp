@@ -1,7 +1,9 @@
 #ifndef _PUBSUB_SUBSCRIBER_FAMILY_HPP_
 #define _PUBSUB_SUBSCRIBER_FAMILY_HPP_
 
+#include <exception>
 #include <memory>
+#include <string>
 
 #include "structs.hpp"
 #include "subscriber_family_registration_manager.hpp"
@@ -13,13 +15,25 @@ class ISubscriberFamily {
     public:
         typedef std::unique_ptr<ISubscriberFamilyRegistrationManager> ISubscriberFamilyRegistrationManagerUniquePtr;
 
-        virtual void Publish(PubsubMessage message);
-        virtual PubsubSubscriberFamilyId GetID() const; 
-        virtual ISubscriberFamilyRegistrationManager* GetRegistrationManager() const;
-        virtual ISubscriberSelectionStrategy* GetSelectionStrategy() const;
-        virtual void SetSelectionStrategy(ISubscriberSelectionStrategy* strategy);
+        virtual void
+        Publish(
+            PubsubMessage message);
+        
+        virtual PubsubSubscriberFamilyId
+        GetID() const; 
+        
+        virtual ISubscriberFamilyRegistrationManager*
+        GetRegistrationManager() const;
+        
+        virtual ISubscriberSelectionStrategy*
+        GetSelectionStrategy() const;
+        
+        virtual void
+        SetSelectionStrategy(
+            ISubscriberSelectionStrategy* strategy);
 
-        virtual ~ISubscriberFamily() {}
+        virtual
+        ~ISubscriberFamily() {}
 
     protected:
         ISubscriberFamily(
@@ -36,7 +50,8 @@ class IThreadSafeSubscriberFamily: public ISubscriberFamily {
     public:
         typedef std::unique_ptr<IThreadSafeSubscriberFamilyRegistrationManager> IThreadSafeSubscriberFamilyRegistrationManagerUniquePtr;
         
-        virtual ~IThreadSafeSubscriberFamily() {}
+        virtual
+        ~IThreadSafeSubscriberFamily() {}
     
     protected:
         IThreadSafeSubscriberFamily(
@@ -63,26 +78,28 @@ class BasicThreadSafeSubscriberFamily: public IThreadSafeSubscriberFamily {
 
 // Thrown when SubscriberFamily's registration manager is null
 class NullSubscriberFamilyRegistrationManagerException: public std::exception {
-    static constexpr std::string_view errorMessage = "Referenced ISubscriberFamilyManagerRegistrationManager is not defined";
-    
     public:
         // Displays the error message
         inline const char*
         what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
             return errorMessage.data();
         };
+    
+    private:
+        static constexpr std::string_view errorMessage = "Referenced ISubscriberFamilyManagerRegistrationManager is not defined";
 };
 
 // Thrown when SubscriberFamily's selection strategy is null
 class NullSubscriberFamilySelectionStrategyException: public std::exception {
-    static constexpr std::string_view errorMessage = "Referenced ISubscriberFamilySelectionStrategy is not defined";
-    
     public:
         // Displays the error message
         inline const char*
         what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
             return errorMessage.data();
         };
+    
+    private:
+        static constexpr std::string_view errorMessage = "Referenced ISubscriberFamilySelectionStrategy is not defined";
 };
 
 } // namespace pubsub

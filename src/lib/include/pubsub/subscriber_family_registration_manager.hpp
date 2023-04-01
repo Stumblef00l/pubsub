@@ -12,11 +12,19 @@ namespace pubsub {
 
 class ISubscriberFamilyRegistrationManager {
     public:
-
-        virtual void RegisterSubscriber(ISubscriber* subscriber);
-        virtual void UnregisterSubscriber(const PubsubSubscriberId& id);
-        virtual std::vector<ISubscriber*> GetSubscribers() const;
-        virtual ISubscriber* GetSubscriber(const PubsubSubscriberId& id) const;
+        virtual void
+        RegisterSubscriber(
+            ISubscriber* subscriber);
+        
+        virtual void
+        UnregisterSubscriber(
+            const PubsubSubscriberId& id);
+        
+        virtual std::vector<ISubscriber*>
+        GetSubscribers() const;
+        
+        virtual ISubscriber*
+        GetSubscriber(const PubsubSubscriberId& id) const;
 
         virtual ~ISubscriberFamilyRegistrationManager() {}
 
@@ -43,37 +51,49 @@ class BasicThreadSafeSubscriberFamilyRegistrationManager: public IThreadSafeSubs
     public:
         BasicThreadSafeSubscriberFamilyRegistrationManager();
 
-        void RegisterSubscriber(ISubscriber* subscriber) override;
-        void UnregisterSubscriber(const PubsubSubscriberId& id) override;
-        std::vector<ISubscriber*> GetSubscribers() const override;
-        ISubscriber* GetSubscriber(const PubsubSubscriberId& id) const override;
+        void
+        RegisterSubscriber(
+            ISubscriber* subscriber) override;
+        
+        void
+        UnregisterSubscriber(
+            const PubsubSubscriberId& id) override;
+        
+        std::vector<ISubscriber*>
+        GetSubscribers() const override;
+        
+        ISubscriber*
+        GetSubscriber(
+            const PubsubSubscriberId& id) const override;
     
     private:
-        std::shared_mutex subscribers_mtx_;
+        mutable std::shared_mutex subscribers_mtx_;
 };
 
 // Thrown when trying to register a subscriber that is already registered
-class SubscriberAlreadyExistsException: public std::exception {
-    static constexpr std::string_view errorMessage = "A Subscriber with provided ID is already registered";
-    
+class SubscriberAlreadyExistsException: public std::exception {    
     public:
         // Displays the error message
         inline const char*
         what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
             return errorMessage.data();
         };
+    
+    private:
+        static constexpr std::string_view errorMessage = "A Subscriber with provided ID is already registered";
 };
 
 // Thrown when trying to unregister a subscriber that isn't currently registered
-class SubscriberNotFoundException: public std::exception {
-    static constexpr std::string_view errorMessage = "A registered subscriber with provided ID was not found.";
-    
+class SubscriberNotFoundException: public std::exception {    
     public:
         // Displays the error message
         inline const char*
         what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
             return errorMessage.data();
         };
+    
+    private:
+        static constexpr std::string_view errorMessage = "A registered subscriber with provided ID was not found.";
 };
 
 } // namespace pubsub

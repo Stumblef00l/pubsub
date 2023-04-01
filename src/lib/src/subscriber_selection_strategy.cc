@@ -1,5 +1,8 @@
 #include "pubsub/subscriber_selection_strategy.hpp"
 
+#include <mutex>
+#include <vector>
+
 #include "pubsub/subscriber.hpp"
 
 namespace pubsub {
@@ -7,8 +10,12 @@ namespace pubsub {
 RoundRobinSubscriberSelectionStrategy::RoundRobinSubscriberSelectionStrategy()
     : current_selected_index_(0) {}
 
+ThreadSafeRoundRobinSubscriberSelectionStrategy::ThreadSafeRoundRobinSubscriberSelectionStrategy()
+    : current_selected_index_(0) {}
+
 std::vector<ISubscriber*>
-RoundRobinSubscriberSelectionStrategy::Select(const std::vector<ISubscriber*>& subscribers) {
+RoundRobinSubscriberSelectionStrategy::Select(
+    const std::vector<ISubscriber*>& subscribers) {
     if(subscribers.empty())
         return {};
     
@@ -19,11 +26,9 @@ RoundRobinSubscriberSelectionStrategy::Select(const std::vector<ISubscriber*>& s
     return selected_subscribers_list;
 }
 
-ThreadSafeRoundRobinSubscriberSelectionStrategy::ThreadSafeRoundRobinSubscriberSelectionStrategy()
-    : current_selected_index_(0) {}
-
 std::vector<ISubscriber*>
-ThreadSafeRoundRobinSubscriberSelectionStrategy::Select(const std::vector<ISubscriber*>& subscribers) {
+ThreadSafeRoundRobinSubscriberSelectionStrategy::Select(
+    const std::vector<ISubscriber*>& subscribers) {
     if(subscribers.empty())
         return {};
     

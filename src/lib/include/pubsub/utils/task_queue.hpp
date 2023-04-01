@@ -18,20 +18,33 @@ class IThreadSafeTaskQueue {
     public:
         // Waits (suspends thread) until queue is available for queueing again
         // TODO(vkunal): Add support for non-blocking and blocking modes
-        virtual void Enqueue(TaskType message) = 0;
+        virtual void
+        Enqueue(
+            TaskType message) = 0;
 
         // Waits (suspends thread) until queue becomes non-empty
         // TODO(vkunal): Add support for non-blocking and blocking modes
-        virtual TaskType Dequeue() = 0;
-        virtual bool IsEmpty() const = 0;
-        virtual bool IsFull() const = 0;
-        virtual size_t GetSize() const = 0;
-        virtual bool Close() = 0;
+        virtual TaskType
+        Dequeue() = 0;
+        
+        virtual bool
+        IsEmpty() const = 0;
+        
+        virtual bool
+        IsFull() const = 0;
+        
+        virtual size_t
+        GetSize() const = 0;
+        
+        virtual bool
+        Close() = 0;
 
-        virtual ~IThreadSafeTaskQueue() noexcept {}
+        virtual
+        ~IThreadSafeTaskQueue() noexcept {}
 
     protected:
-        IThreadSafeTaskQueue(const size_t capacity);
+        IThreadSafeTaskQueue(
+            const size_t capacity);
 
         const size_t capacity_;
         bool closed_;
@@ -40,19 +53,32 @@ class IThreadSafeTaskQueue {
 template<class TaskType>
 class OrderedThreadSafeTaskQueue: public IThreadSafeTaskQueue<TaskType> {
     public:
-        OrderedThreadSafeTaskQueue(const size_t capacity, const bool drop_tasks_if_closed = true);
+        OrderedThreadSafeTaskQueue(
+            const size_t capacity,
+            const bool drop_tasks_if_closed = true);
+        
         ~OrderedThreadSafeTaskQueue();
 
-        void Enqueue(TaskType message) override;
-        TaskType Dequeue() override;
-        bool IsEmpty() const override;
-        bool IsFull() const override;
-        size_t GetSize() const override;
+        void
+        Enqueue(
+            TaskType message) override;
+        
+        TaskType
+        Dequeue() override;
+        
+        bool
+        IsEmpty() const override;
+        
+        bool
+        IsFull() const override;
+        
+        size_t
+        GetSize() const override;
+        
         bool Close() override;
     
     private:
         size_t ThreadUnsafeGetSize() const;
-
 
         // We use a shared_mutex to allow multiple
         // concurrent reads
@@ -65,39 +91,42 @@ class OrderedThreadSafeTaskQueue: public IThreadSafeTaskQueue<TaskType> {
 };
 
 // Thrown when Queue is empty
-class TaskQueueEmptyException: public std::exception {
-    static constexpr std::string_view errorMessage = "Task queue has no queued tasks";
-    
+class TaskQueueEmptyException: public std::exception {    
     public:
         // Displays the error message
         inline const char*
         what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
             return errorMessage.data();
         };
+    
+    private:
+        static constexpr std::string_view errorMessage = "Task queue has no queued tasks";
 };
 
 // Thrown when Queue is full
-class TaskQueueFullException: public std::exception {
-    static constexpr std::string_view errorMessage = "Task queue is at full capacity";
-    
+class TaskQueueFullException: public std::exception {    
     public:
         // Displays the error message
         inline const char*
         what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
             return errorMessage.data();
         };
+    
+    private:
+        static constexpr std::string_view errorMessage = "Task queue is at full capacity";
 };
 
 // Thrown when Task Queue is already closed
-class TaskQueueClosedException: public std::exception {
-    static constexpr std::string_view errorMessage = "Task queue is closed and is not processing any more messages";
-    
+class TaskQueueClosedException: public std::exception {    
     public:
         // Displays the error message
         inline const char*
         what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
             return errorMessage.data();
         };
+
+    private:    
+        static constexpr std::string_view errorMessage = "Task queue is closed and is not processing any more messages";
 };
 
 } // namespace utils

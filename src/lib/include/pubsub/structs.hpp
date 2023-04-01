@@ -28,31 +28,36 @@ struct PubsubMessage {
         family_id(std::move(family_id)),
         payload(std::move(payload)) {}
 
-    PubsubMessage(PubsubMessage&& message)
-    : id(std::move(message.id)),
-      family_id(std::move(message.family_id)),
-      payload(std::move(message.payload)) {}
+    PubsubMessage(
+      PubsubMessage&& message)
+      : id(std::move(message.id)),
+        family_id(std::move(message.family_id)),
+        payload(std::move(message.payload)) {}
     
-    PubsubMessage(const PubsubMessage& message)
-    : id(message.id),
-      family_id(message.family_id),
-      payload(message.payload) {}
+    PubsubMessage(
+      const PubsubMessage& message)
+      : id(message.id),
+        family_id(message.family_id),
+        payload(message.payload) {}
 
-    PubsubMessage& operator= (PubsubMessage&& message) {
+    PubsubMessage& operator= (
+      PubsubMessage&& message) {
         id = std::move(message.id);
         family_id = std::move(message.family_id);
         payload = std::move(message.payload);
         return *this;
     }
     
-    PubsubMessage& operator= (const PubsubMessage& message) {
+    PubsubMessage& operator= (
+      const PubsubMessage& message) {
         id = message.id;
         family_id = message.family_id;
         payload = message.payload;
         return *this;
     }
 
-    bool operator== (const PubsubMessage& message) const {
+    bool operator== (
+      const PubsubMessage& message) const {
         return (
           (id.compare(message.id) == 0)
           && (family_id.compare(message.family_id) == 0)

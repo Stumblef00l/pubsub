@@ -15,7 +15,8 @@ namespace {
 
 class BasicSubscriberFamilyRegistrationManagerUnitTest: public ::testing::Test {
     protected:
-        void SetUp() override {
+        void
+        SetUp() override {
             registration_manager = std::make_unique<pubsub::BasicSubscriberFamilyRegistrationManager>();
             mock_subscriber = std::make_unique<pubsub::testing::MockSubscriber>();
         }

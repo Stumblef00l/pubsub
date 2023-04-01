@@ -16,27 +16,12 @@ IPublisher::IPublisher(
     IPublisher::ISubscriberFamilyManagerUniquePtr subscriber_family_manager)
     : subscriber_family_manager_(std::move(subscriber_family_manager)) {}
 
-ISubscriberFamilyManager*
-IPublisher::GetSubscriberFamilyManager() const {
-    auto s = subscriber_family_manager_.get();
-    if (s == nullptr || s == NULL)
-        throw NullSubscriberFamilyManagerException();
-
-    return s;
-}
+IAsyncPublisher::IAsyncPublisher(
+    ISubscriberFamilyManagerUniquePtr subscriber_family_manager)
+    : IPublisher(std::move(subscriber_family_manager)) {}
 
 BasicSynchronousPublisher::BasicSynchronousPublisher(
     IPublisher::ISubscriberFamilyManagerUniquePtr subscriber_family_manager)
-    : IPublisher(std::move(subscriber_family_manager)) {}
-
-void BasicSynchronousPublisher::Publish(
-    PubsubMessage message) {
-    auto s = subscriber_family_manager_.get();
-    auto family = s->GetFamily(message.family_id);
-    family->Publish(std::move(message));
-}
-
-IAsyncPublisher::IAsyncPublisher(ISubscriberFamilyManagerUniquePtr subscriber_family_manager)
     : IPublisher(std::move(subscriber_family_manager)) {}
 
 OrderedAsyncPublisher::OrderedAsyncPublisher(
@@ -52,15 +37,36 @@ OrderedAsyncPublisher::~OrderedAsyncPublisher() {
     Stop();
 }
 
-void OrderedAsyncPublisher::Publish(PubsubMessage message) {
+ISubscriberFamilyManager*
+IPublisher::GetSubscriberFamilyManager() const {
+    auto s = subscriber_family_manager_.get();
+    if (s == nullptr || s == NULL)
+        throw NullSubscriberFamilyManagerException();
+
+    return s;
+}
+
+void
+BasicSynchronousPublisher::Publish(
+    PubsubMessage message) {
+    auto s = subscriber_family_manager_.get();
+    auto family = s->GetFamily(message.family_id);
+    family->Publish(std::move(message));
+}
+
+void
+OrderedAsyncPublisher::Publish(
+    PubsubMessage message) {
     message_queue_->Enqueue(std::move(message));
 }
 
-void OrderedAsyncPublisher::Stop() {
+void
+OrderedAsyncPublisher::Stop() {
     message_queue_->Close();
 }
 
-void OrderedAsyncPublisher::EventLoop() {
+void
+OrderedAsyncPublisher::EventLoop() {
     while(true) {
         PubsubMessage message;
         try {

@@ -13,9 +13,8 @@ namespace {
 
 class RoundRobinSelectionStrategyTest: public ::testing::Test {
     protected:
-        void SetUp() override {
-            using ::testing::Return;
-
+        void
+        SetUp() override {
             for(auto idx = (size_t)0; idx < CANDIDATE_POOL_SIZE; idx++) {
                 auto mock_candidate = std::make_unique<pubsub::testing::MockSubscriber>();
                 mock_candidates.push_back(std::move(mock_candidate));

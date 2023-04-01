@@ -13,7 +13,8 @@ namespace {
 
 class BasicSynchronousPublisherUnitTest: public ::testing::Test {
     protected:
-        void SetUp() override {
+        void
+        SetUp() override {
             mock_family_manager = std::make_unique<pubsub::testing::MockSubscriberFamilyManager>();
             mock_family_manager_ptr = mock_family_manager.get();
             mock_family = std::make_unique<pubsub::testing::MockSubscriberFamily>();

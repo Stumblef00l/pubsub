@@ -8,7 +8,8 @@ namespace pubsub {
 namespace utils {
 
 template<class T>
-std::vector<T*> ConvertUniquePtrListToRawPointerList(
+std::vector<T*>
+ConvertUniquePtrListToRawPointerList(
     const std::vector<std::unique_ptr<T>>& uptr_list) {
     auto raw_pointer_list = std::vector<T*>{};
     for(auto& uptr: uptr_list)

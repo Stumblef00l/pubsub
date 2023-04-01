@@ -10,23 +10,31 @@ namespace pubsub {
 
 class ISubscriberSelectionStrategy {
     public:
-        virtual std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) = 0;
+        virtual std::vector<ISubscriber*>
+        Select(
+            const std::vector<ISubscriber*>& subscribers) = 0;
 
-        virtual ~ISubscriberSelectionStrategy() {}
+        virtual
+        ~ISubscriberSelectionStrategy() {}
 };
 
 class IThreadSafeSubscriberSelectionStrategy: public ISubscriberSelectionStrategy {
     public:
-        virtual std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) = 0;
+        virtual std::vector<ISubscriber*>
+        Select(
+            const std::vector<ISubscriber*>& subscribers) = 0;
         
-        virtual ~IThreadSafeSubscriberSelectionStrategy() {}
+        virtual
+        ~IThreadSafeSubscriberSelectionStrategy() {}
 };
 
 class RoundRobinSubscriberSelectionStrategy: public ISubscriberSelectionStrategy {
     public:
         RoundRobinSubscriberSelectionStrategy();
 
-        std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) override;
+        std::vector<ISubscriber*>
+        Select(
+            const std::vector<ISubscriber*>& subscribers) override;
     
     private:
         size_t current_selected_index_;
@@ -36,11 +44,13 @@ class ThreadSafeRoundRobinSubscriberSelectionStrategy: public IThreadSafeSubscri
     public:
         ThreadSafeRoundRobinSubscriberSelectionStrategy();
 
-        std::vector<ISubscriber*> Select(const std::vector<ISubscriber*>& subscribers) override;
+        std::vector<ISubscriber*>
+        Select(
+            const std::vector<ISubscriber*>& subscribers) override;
 
     private:
+        mutable std::mutex index_mtx_;
         size_t current_selected_index_;
-        std::mutex index_mtx_;
 };
 
 } // namespace pubsub

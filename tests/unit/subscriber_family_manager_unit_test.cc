@@ -10,7 +10,8 @@ namespace {
 
 class BasicSubscriberFamilyManagerUnitTest: public ::testing::Test {
     protected:
-        void SetUp() override {
+        void
+        SetUp() override {
             subscriber_family = std::make_unique<pubsub::testing::MockSubscriberFamily>();
             family_manager = std::make_unique<pubsub::BasicSubscriberFamilyManager>();
         }
