@@ -5,3 +5,9 @@ cc_binary(
     srcs = ["sync_producer_observer.cc"],
     deps = ["//src/lib:pubsub"],
 )
+
+cc_binary(
+    name = "hello_world",
+    srcs = ["hello_world.cc"],
+    deps = ["//src/hello_world:hello_world"],
+)

@@ -51,6 +51,15 @@ cc_test(
 )
 
 cc_test(
+    name = "hello_world_unit_test",
+    srcs = ["hello_world_unit_test.cc"],
+    deps = [
+        "//src/hello_world:hello_world",
+        "@com_google_googletest//:gtest_main",
+    ]
+)
+
+cc_test(
     name = "utils/task_queue_unit_test",
     srcs = ["utils/task_queue_unit_test.cc"],
     deps = [
