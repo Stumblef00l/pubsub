@@ -1,3 +1,3 @@
 # Pubsub
 
-A pubsub implementation. Just for fun.
+A pubsub implementation with async IO extension (via epoll). Just for fun.
